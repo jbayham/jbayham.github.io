@@ -179,6 +179,9 @@ stargazer(logit.model,
           type = "text")
 ```
 
+
+
+
 We can use these coefficient estimates to calculate the WTP.  First, we extract the coefficient estimates and the variables used in the regression.
 ```{r WTP1}
 bid.parameter <- -logit.model$coefficients[2]  #coefficient on bid variable
@@ -219,6 +222,44 @@ practice.data %>%
   scale_fill_discrete(guide = FALSE) +
   theme_bw() +
   facet_wrap(~ENVIRONMENT)
+```
+
+
+***
+
+This section is for additional information.  You are not required to generate these figures for your analysis.
+
+The following figure plots the individual propensities to say yes as well as the mean person in the sample.
+
+```{r mb_curve,warning=F,message=F}
+practice.data %>%
+  mutate(propensity.yes=logit.model$fitted.values,
+         curve=1/(1+exp(-(logit.model$coefficients[2]*BID + t(colMeans(model.matrix(logit.model)[,c(1,3,4)])) %*% logit.model$coefficients[c(1,3,4)] ))),
+         ENVIRONMENT=factor(ENVIRONMENT,labels = c("Not Env. Group Member","Env. Group Member"))) %>%
+  ggplot() +
+  geom_point(aes(x=propensity.yes,y=BID)) +
+  geom_line(aes(x=curve,y=BID)) +
+  geom_hline(aes(yintercept = WTP)) +
+  xlim(c(0,1)) +
+  scale_y_continuous(breaks = seq(0 , 7 , 1 ), labels = dollar) +
+  xlab("Prob(Yes)")
+
+
+
+```
+
+The following figure plots the propensities to respond yes as a function of the bid stratified by environmental group membership.  A smoothed curve (not logit) is fitted to the data.
+
+```{r mb_curve_env,warning=F,message=F}
+practice.data %>%
+  mutate(propensity.yes=logit.model$fitted.values,
+         ENVIRONMENT=factor(ENVIRONMENT,labels = c("Not Env. Group Member","Env. Group Member"))) %>%
+  ggplot(aes(x=propensity.yes,y=BID,color=ENVIRONMENT)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("Prob(Yes)")
+
+
 ```
 
 ***
