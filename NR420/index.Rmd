@@ -1,10 +1,12 @@
 ---
 title: "Lab: Estimating Ecosystem Service Values"  
-date: March 27, 2018
+author: "Jude Bayham"
+date: April 16, 2019
 output: 
-  html_document:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
     toc: true
-    number_sections: true
 ---
 
 
@@ -19,11 +21,12 @@ The objective of this lab exercise is to familiarize your with a particular non-
 
 ## The Study
 The South Platte River is a highly contaminated and degraded water way that is primarily used for agricultural production.  The survey sought to elicit values for an improvement in the following ecosystem services:  
-* natural purification of water   
-* erosion control  
-* habitat for fish and wildlife  
-* dilution of wastewater  
-* recreation use   
+
+- natural purification of water   
+- erosion control  
+- habitat for fish and wildlife  
+- dilution of wastewater  
+- recreation use   
 
 The objective of the study was to estimate total economic value (inclusive of non-use values) so the authors chose the contingent valuation method.  The authors developed careful descriptions of the impact to ecosystem services and detailed how the proposed changes would impact the provision of these services.  The authors included detailed descriptions and a diagram illustrating how the proposed activities would restore the services.
 
@@ -37,7 +40,29 @@ The objective of the study was to estimate total economic value (inclusive of no
 
 
 
-![](E:/Google Drive/Teaching/Guest Lecture/NR 420 - Ecosystem Service Valuation/Exercise/figures/Loomis_figure.png)
+![](figures/Loomis_figure.png)
+
+### Survey Instrument
+
+The most important part of the contingent valuation survey is the elicitation of willingness to pay for the ecosystem service.  The investigator needs to carefully word the information and question such that the respondent understands exactly what provision or service they are agreeing to pay money for.  Importantly, the respondents should believe that there is a real chance that they will face the cost.  The following is the exact text presented to respondents in the Loomis et al. (2000) study:
+
+‘‘The purchase of water and 300,000 acres of conservation easements along 45 miles of the South Platte river from willing farmers as well as restoring these areas in natural vegetation costs a great deal of money. To fund these actions a South Platte river restoration fund has been proposed. All citizens along the front range from Denver to Fort Collins would be asked to pay an increased water bill (or rent if water is included in your rent) to:  
+
+ 1. purchase water from farmers to increase water for fish and wildlife from 17% shown in the top pie chart to 42% as shown on the lower pie chart (point to);   
+ 
+ 2. to manage the South Platte river as shown in the increased ecosystem services (point to Fig. 3) along the 45 miles of the South Platte river shown on the map (point to area).   
+ 
+  The funds collected can only be used to restore natural vegetation along 45 miles of the South Platte river and purchase water from willing farmers to increase instream flow to improve habitat for six native fish so they are not in danger of extinction.   
+  
+  If the majority of households vote in favor of the South Platte river restoration fund the 45 miles of river would look like the Fig. 3 Increased ecosystem services with increased water quality and fish and wildlife (point to increased ecosystem service; Fig. 3).  If a majority vote against, these 45 miles of the South Platte river would remain as they are today, as illustrated in current management (point to current management; Fig. 2).  
+  
+  If the South Platte river restoration fund was on the ballot in the next election and it cost your household $x each month in a higher water bill would you vote in favor or against?  
+  
+__I would vote Yes __I would vote No’’
+
+The \$x was randomly filled in with one of 12 dollar amounts (\$1, 2, 3, 5, 8, 10, 12, 20, 30, 40, 50, 100). These dollar amounts were chosen based on results from the focus group and pretest as well as the mean willingness to pay amounts from the past Platte river water quality CVM of Greenley et al. (1982).  
+
+In addition to the willingness to pay question, the investigators asked several other questions about demographic and socioeconomic information as well as attitudes toward relevant policies such as prior appropriations.  These additional data are used to control for additional factors that may influence willingness to pay.
 
 ***  
 
@@ -76,7 +101,7 @@ Note that $\boldsymbol \alpha=\boldsymbol \alpha_1 - \boldsymbol \alpha_0$ and $
 <!-- 2. Estimation and calculation are accomplished with no arbitrary truncation -->
 <!-- 3. There is consistency between randomness for estimation and randomness for calculation -->
 
-
+***
 
 # From Theory to Practice
 I will demonstrate the steps to analyze a contingent valuation survey dataset using made up data.  Then, you will use the data from Loomis et al. (2000) to nearly recreate the results in the paper. 
@@ -88,14 +113,14 @@ practice data - https://drive.google.com/file/d/1g4ZZlub13DLSKf81m7nyY__0vmzDtHX
 
 
 Note: you must login using your student CSU google account.  It should end with @rams.colostate.edu.  If you see the following image, you need to use your CSU login.  
-![](E:/Google Drive/Teaching/Guest Lecture/NR 420 - Ecosystem Service Valuation/Exercise/figures/google_error.png)
+![](figures/google_error.png)
 
 
 ***  
 
 Download the files to the folder "data".  Once you have downloaded the data, open RStudio.   
 
-Open a new script.  Set the working directory to the folder location where you downloaded the data.  If the data was downloaded to C:/jbayham/lab, you would enter   
+Open a new script.  Set the working directory to the folder location where you downloaded the data.  If the data was downloaded to C:/jbayham/CV_lab, you would enter   
 ```{r setwd, eval=FALSE}
 setwd("C:/jbayham/CV_lab")
 ```
@@ -103,17 +128,15 @@ setwd("C:/jbayham/CV_lab")
 Note the forward slashes.  If you copy the path from windows, be sure to replace the backslashes with forward slashes.
 You may need to load these packages along the way.  The command `library()` loads the package into the current session.  
 ```{r packages, message=FALSE}
-library(readr)
-library(stargazer)
-library(ggplot2)
-library(scales)
 library(tidyverse)
+library(stargazer)
+library(scales)
 ```
 
-Load the data into the object `practice.data` using the function `read.csv()`.
+Load the data into the object `practice.data` using the function `read_csv()`.
 
 ```{r data_readin}
-practice.data <- read.csv("data/practice_data.csv")
+practice.data <- read_csv("data/practice_data.csv")
 ```
 
 By default, R stores this data in an object known as a `data.frames`.  Data frames are just one type of object that can be stored in your workspace.   
@@ -127,25 +150,34 @@ str(practice.data)
 The command `str()` returns information about the object including its type, the variable names, the number of observations, and the data type of each variable.  The following table summarizes the data
 
 | Variable Name  | Description |
-|------------|------------------------------------------------------------|
-| y          | A binary variable equal to 1 if respondent is willing to pay the proposed fee |
-| BID        | The proposed fee offered to individual $i$ |
-| INCOME     | The natural log of the respondents income |
-| ENVIRONMENT| A binary variable equal to 1 if the respondent belongs to an environmental group |
+|----------------|------------------------------------------------------------|
+| y              | A binary variable equal to 1 if respondent is willing to pay the proposed fee |
+| BID            | The proposed fee offered to individual $i$ |
+| INCOME         | The natural log of the respondents income |
+| ENVIRONMENT    | A binary variable equal to 1 if the respondent belongs to an environmental group |
 
 It is useful to generate a table of summary statistics for each variable
 
 ```{r summary_stats}
-stargazer(practice.data, type = "text", digits = 2)
+stargazer(practice.data %>% as.data.frame(), 
+          type = "text", 
+          digits = 2)
 ```
 
 Now we will estimate the logistic regression model using a generalized linear model command `glm()` in R.  The model is defined by the command `y ~ BID + INCOME + ENVIRONMENT`, which references variable names in the data frame `practice.data`.
 
 ```{r logit_model}
-logit.model <- glm(y ~ BID + INCOME + ENVIRONMENT, data = practice.data, family = "binomial")
+logit.model <- glm(y ~ BID + INCOME + ENVIRONMENT, 
+                   data = practice.data, 
+                   family = "binomial")
 summary(logit.model)
 ```
 
+Or use stargazer to generate a nicely formatted table:
+```{r logit_star}
+stargazer(logit.model,
+          type = "text")
+```
 
 We can use these coefficient estimates to calculate the WTP.  First, we extract the coefficient estimates and the variables used in the regression.
 ```{r WTP1}
@@ -164,9 +196,9 @@ WTP <- (1/bid.parameter)*log(1+exp(t(mean.preferences) %*% preference.parameters
 paste(round(WTP,2))
 ```
 
-The mean willigness to pay is $3.68 per month per household.    
+The mean willigness to pay is $`r paste(round(WTP,2))` per month per household.    
 
-Now, let's calculate the willingness to pay of each individual in the survey.
+Now, let's calculate the willingness to pay of each individual in the survey and plot the values.
 
 ```{r WTP3}
 individual.WTP <- (1/bid.parameter)*log(1+exp(individual.preferences %*% preference.parameters))
@@ -174,13 +206,19 @@ hist(individual.WTP)
 ```
 
 You can also make it look nicer with the ```ggplot``` package.
-```{r ggplot_hist}
-cbind(practice.data$y,individual.WTP) %>% as_tibble() %>% 
-  ggplot(aes(V2)) + 
-  geom_histogram(aes(fill=V1), binwidth = .5) +
-  stat_bin(binwidth= .5, geom="text", aes(label=..count..),vjust = -.7) +
-  labs(title="Distribution of WTP", x="",y="") +
-  scale_x_continuous(breaks = seq(2 , 10 , .5 ), labels = dollar) 
+```{r ggplot_hist,warning=F}
+practice.data %>%
+  mutate(WTP=individual.WTP,
+         ENVIRONMENT=case_when(ENVIRONMENT==0 ~ "Not Env. Group Member",
+                               ENVIRONMENT==1 ~ "Env. Group Member")) %>%
+  ggplot(aes(x=WTP,fill=ENVIRONMENT)) + 
+  geom_histogram(binwidth = .5) +
+  #stat_bin(binwidth= .5, geom="text", aes(label=..count..),vjust = -.7) +
+  labs(title="Distribution of WTP by Environmental Group Membership", x="",y="") +
+  scale_x_continuous(breaks = seq(2 , 10 , 1 ), labels = dollar) +
+  scale_fill_discrete(guide = FALSE) +
+  theme_bw() +
+  facet_wrap(~ENVIRONMENT)
 ```
 
 ***
@@ -206,8 +244,8 @@ See the paper for the regression equation that should be estimated.
 
 5. Calculate the willingess to pay for each individual in the sample and plot the distribution with a histogram.  Include the figure in your report with a brief description of your results.
 
-
+6. Design a survey instrument to elicit willingness to pay for your land management plan.  Give the respondent clear information about the plan.  The first question should ask whether the respondent would be willing to pay some dollar amount for the proposed improvement in ecosystem services.  How will you vary the dollar amount across survey respondents?  Complete the survey instrument by asking other questions about relevant information about the respondent (i.e., demographics, income). 
 
 ***
 
-R is a very powerful and widely used analytical tool.  Best of all, it is completely free.  You can download R here: https://cran.cnr.berkeley.edu/.  You can download RStudio here: https://www.rstudio.com/products/rstudio/download/.
+R is a very powerful and widely used analytical tool.  Best of all, it is completely free.  You can download R here: https://cran.cnr.berkeley.edu/.  You can download RStudio here: https://www.rstudio.com/products/rstudio/download/.  You can even draft documents (like the one you are reading) using a mix of text and R code in a language called [R Markdown](https://rmarkdown.rstudio.com/).
