@@ -126,7 +126,7 @@ setwd("C:/jbayham/CV_lab")
 ```
 
 Note the forward slashes.  If you copy the path from windows, be sure to replace the backslashes with forward slashes.
-You may need to load these packages along the way.  The command `library()` loads the package into the current session.  
+You may need to load these packages along the way.  The command `library()` loads the package into the current session.  If you receive an error while loading the package, you may need to install it.  In the console type: `install.packages("package_name")` where package_name is the name of the package you will enter into the library function.
 ```{r packages, message=FALSE}
 library(tidyverse)
 library(stargazer)
