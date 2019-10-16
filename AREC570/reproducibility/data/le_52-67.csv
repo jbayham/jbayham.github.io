@@ -1,0 +1,569 @@
+continent,country,year,lifeExp
+Africa,Algeria,1952,43.077
+Africa,Algeria,1957,45.685
+Africa,Algeria,1962,48.303
+Africa,Algeria,1967,51.407
+Africa,Angola,1952,30.015
+Africa,Angola,1957,31.999
+Africa,Angola,1962,34
+Africa,Angola,1967,35.985
+Africa,Benin,1952,38.223
+Africa,Benin,1957,40.358
+Africa,Benin,1962,42.618
+Africa,Benin,1967,44.885
+Africa,Botswana,1952,47.622
+Africa,Botswana,1957,49.618
+Africa,Botswana,1962,51.52
+Africa,Botswana,1967,53.298
+Africa,Burkina Faso,1952,31.975
+Africa,Burkina Faso,1957,34.906
+Africa,Burkina Faso,1962,37.814
+Africa,Burkina Faso,1967,40.697
+Africa,Burundi,1952,39.031
+Africa,Burundi,1957,40.533
+Africa,Burundi,1962,42.045
+Africa,Burundi,1967,43.548
+Africa,Cameroon,1952,38.523
+Africa,Cameroon,1957,40.428
+Africa,Cameroon,1962,42.643
+Africa,Cameroon,1967,44.799
+Africa,Central African Republic,1952,35.463
+Africa,Central African Republic,1957,37.464
+Africa,Central African Republic,1962,39.475
+Africa,Central African Republic,1967,41.478
+Africa,Chad,1952,38.092
+Africa,Chad,1957,39.881
+Africa,Chad,1962,41.716
+Africa,Chad,1967,43.601
+Africa,Comoros,1952,40.715
+Africa,Comoros,1957,42.46
+Africa,Comoros,1962,44.467
+Africa,Comoros,1967,46.472
+Africa,Congo Dem. Rep.,1952,39.143
+Africa,Congo Dem. Rep.,1957,40.652
+Africa,Congo Dem. Rep.,1962,42.122
+Africa,Congo Dem. Rep.,1967,44.056
+Africa,Congo Rep.,1952,42.111
+Africa,Congo Rep.,1957,45.053
+Africa,Congo Rep.,1962,48.435
+Africa,Congo Rep.,1967,52.04
+Africa,Cote d'Ivoire,1952,40.477
+Africa,Cote d'Ivoire,1957,42.469
+Africa,Cote d'Ivoire,1962,44.93
+Africa,Cote d'Ivoire,1967,47.35
+Africa,Djibouti,1952,34.812
+Africa,Djibouti,1957,37.328
+Africa,Djibouti,1962,39.693
+Africa,Djibouti,1967,42.074
+Africa,Egypt,1952,41.893
+Africa,Egypt,1957,44.444
+Africa,Egypt,1962,46.992
+Africa,Egypt,1967,49.293
+Africa,Equatorial Guinea,1952,34.482
+Africa,Equatorial Guinea,1957,35.983
+Africa,Equatorial Guinea,1962,37.485
+Africa,Equatorial Guinea,1967,38.987
+Africa,Eritrea,1952,35.928
+Africa,Eritrea,1957,38.047
+Africa,Eritrea,1962,40.158
+Africa,Eritrea,1967,42.189
+Africa,Ethiopia,1952,34.078
+Africa,Ethiopia,1957,36.667
+Africa,Ethiopia,1962,40.059
+Africa,Ethiopia,1967,42.115
+Africa,Gabon,1952,37.003
+Africa,Gabon,1957,38.999
+Africa,Gabon,1962,40.489
+Africa,Gabon,1967,44.598
+Africa,Gambia,1952,30
+Africa,Gambia,1957,32.065
+Africa,Gambia,1962,33.896
+Africa,Gambia,1967,35.857
+Africa,Ghana,1952,43.149
+Africa,Ghana,1957,44.779
+Africa,Ghana,1962,46.452
+Africa,Ghana,1967,48.072
+Africa,Guinea,1952,33.609
+Africa,Guinea,1957,34.558
+Africa,Guinea,1962,35.753
+Africa,Guinea,1967,37.197
+Africa,Guinea-Bissau,1952,32.5
+Africa,Guinea-Bissau,1957,33.489
+Africa,Guinea-Bissau,1962,34.488
+Africa,Guinea-Bissau,1967,35.492
+Africa,Kenya,1952,42.27
+Africa,Kenya,1957,44.686
+Africa,Kenya,1962,47.949
+Africa,Kenya,1967,50.654
+Africa,Lesotho,1952,42.138
+Africa,Lesotho,1957,45.047
+Africa,Lesotho,1962,47.747
+Africa,Lesotho,1967,48.492
+Africa,Liberia,1952,38.48
+Africa,Liberia,1957,39.486
+Africa,Liberia,1962,40.502
+Africa,Liberia,1967,41.536
+Africa,Libya,1952,42.723
+Africa,Libya,1957,45.289
+Africa,Libya,1962,47.808
+Africa,Libya,1967,50.227
+Africa,Madagascar,1952,36.681
+Africa,Madagascar,1957,38.865
+Africa,Madagascar,1962,40.848
+Africa,Madagascar,1967,42.881
+Africa,Malawi,1952,36.256
+Africa,Malawi,1957,37.207
+Africa,Malawi,1962,38.41
+Africa,Malawi,1967,39.487
+Africa,Mali,1952,33.685
+Africa,Mali,1957,35.307
+Africa,Mali,1962,36.936
+Africa,Mali,1967,38.487
+Africa,Mauritania,1952,40.543
+Africa,Mauritania,1957,42.338
+Africa,Mauritania,1962,44.248
+Africa,Mauritania,1967,46.289
+Africa,Mauritius,1952,50.986
+Africa,Mauritius,1957,58.089
+Africa,Mauritius,1962,60.246
+Africa,Mauritius,1967,61.557
+Africa,Morocco,1952,42.873
+Africa,Morocco,1957,45.423
+Africa,Morocco,1962,47.924
+Africa,Morocco,1967,50.335
+Africa,Mozambique,1952,31.286
+Africa,Mozambique,1957,33.779
+Africa,Mozambique,1962,36.161
+Africa,Mozambique,1967,38.113
+Africa,Namibia,1952,41.725
+Africa,Namibia,1957,45.226
+Africa,Namibia,1962,48.386
+Africa,Namibia,1967,51.159
+Africa,Niger,1952,37.444
+Africa,Niger,1957,38.598
+Africa,Niger,1962,39.487
+Africa,Niger,1967,40.118
+Africa,Nigeria,1952,36.324
+Africa,Nigeria,1957,37.802
+Africa,Nigeria,1962,39.36
+Africa,Nigeria,1967,41.04
+Africa,Reunion,1952,52.724
+Africa,Reunion,1957,55.09
+Africa,Reunion,1962,57.666
+Africa,Reunion,1967,60.542
+Africa,Rwanda,1952,40
+Africa,Rwanda,1957,41.5
+Africa,Rwanda,1962,43
+Africa,Rwanda,1967,44.1
+Africa,Sao Tome and Principe,1952,46.471
+Africa,Sao Tome and Principe,1957,48.945
+Africa,Sao Tome and Principe,1962,51.893
+Africa,Sao Tome and Principe,1967,54.425
+Africa,Senegal,1952,37.278
+Africa,Senegal,1957,39.329
+Africa,Senegal,1962,41.454
+Africa,Senegal,1967,43.563
+Africa,Sierra Leone,1952,30.331
+Africa,Sierra Leone,1957,31.57
+Africa,Sierra Leone,1962,32.767
+Africa,Sierra Leone,1967,34.113
+Africa,Somalia,1952,32.978
+Africa,Somalia,1957,34.977
+Africa,Somalia,1962,36.981
+Africa,Somalia,1967,38.977
+Africa,South Africa,1952,45.009
+Africa,South Africa,1957,47.985
+Africa,South Africa,1962,49.951
+Africa,South Africa,1967,51.927
+Africa,Sudan,1952,38.635
+Africa,Sudan,1957,39.624
+Africa,Sudan,1962,40.87
+Africa,Sudan,1967,42.858
+Africa,Swaziland,1952,41.407
+Africa,Swaziland,1957,43.424
+Africa,Swaziland,1962,44.992
+Africa,Swaziland,1967,46.633
+Africa,Tanzania,1952,41.215
+Africa,Tanzania,1957,42.974
+Africa,Tanzania,1962,44.246
+Africa,Tanzania,1967,45.757
+Africa,Togo,1952,38.596
+Africa,Togo,1957,41.208
+Africa,Togo,1962,43.922
+Africa,Togo,1967,46.769
+Africa,Tunisia,1952,44.6
+Africa,Tunisia,1957,47.1
+Africa,Tunisia,1962,49.579
+Africa,Tunisia,1967,52.053
+Africa,Uganda,1952,39.978
+Africa,Uganda,1957,42.571
+Africa,Uganda,1962,45.344
+Africa,Uganda,1967,48.051
+Africa,Zambia,1952,42.038
+Africa,Zambia,1957,44.077
+Africa,Zambia,1962,46.023
+Africa,Zambia,1967,47.768
+Africa,Zimbabwe,1952,48.451
+Africa,Zimbabwe,1957,50.469
+Africa,Zimbabwe,1962,52.358
+Africa,Zimbabwe,1967,53.995
+Americas,Argentina,1952,62.485
+Americas,Argentina,1957,64.399
+Americas,Argentina,1962,65.142
+Americas,Argentina,1967,65.634
+Americas,Bolivia,1952,40.414
+Americas,Bolivia,1957,41.89
+Americas,Bolivia,1962,43.428
+Americas,Bolivia,1967,45.032
+Americas,Brazil,1952,50.917
+Americas,Brazil,1957,53.285
+Americas,Brazil,1962,55.665
+Americas,Brazil,1967,57.632
+Americas,Canada,1952,68.75
+Americas,Canada,1957,69.96
+Americas,Canada,1962,71.3
+Americas,Canada,1967,72.13
+Americas,Chile,1952,54.745
+Americas,Chile,1957,56.074
+Americas,Chile,1962,57.924
+Americas,Chile,1967,60.523
+Americas,Colombia,1952,50.643
+Americas,Colombia,1957,55.118
+Americas,Colombia,1962,57.863
+Americas,Colombia,1967,59.963
+Americas,Costa Rica,1952,57.206
+Americas,Costa Rica,1957,60.026
+Americas,Costa Rica,1962,62.842
+Americas,Costa Rica,1967,65.424
+Americas,Cuba,1952,59.421
+Americas,Cuba,1957,62.325
+Americas,Cuba,1962,65.246
+Americas,Cuba,1967,68.29
+Americas,Dominican Republic,1952,45.928
+Americas,Dominican Republic,1957,49.828
+Americas,Dominican Republic,1962,53.459
+Americas,Dominican Republic,1967,56.751
+Americas,Ecuador,1952,48.357
+Americas,Ecuador,1957,51.356
+Americas,Ecuador,1962,54.64
+Americas,Ecuador,1967,56.678
+Americas,El Salvador,1952,45.262
+Americas,El Salvador,1957,48.57
+Americas,El Salvador,1962,52.307
+Americas,El Salvador,1967,55.855
+Americas,Guatemala,1952,42.023
+Americas,Guatemala,1957,44.142
+Americas,Guatemala,1962,46.954
+Americas,Guatemala,1967,50.016
+Americas,Haiti,1952,37.579
+Americas,Haiti,1957,40.696
+Americas,Haiti,1962,43.59
+Americas,Haiti,1967,46.243
+Americas,Honduras,1952,41.912
+Americas,Honduras,1957,44.665
+Americas,Honduras,1962,48.041
+Americas,Honduras,1967,50.924
+Americas,Jamaica,1952,58.53
+Americas,Jamaica,1957,62.61
+Americas,Jamaica,1962,65.61
+Americas,Jamaica,1967,67.51
+Americas,Mexico,1952,50.789
+Americas,Mexico,1957,55.19
+Americas,Mexico,1962,58.299
+Americas,Mexico,1967,60.11
+Americas,Nicaragua,1952,42.314
+Americas,Nicaragua,1957,45.432
+Americas,Nicaragua,1962,48.632
+Americas,Nicaragua,1967,51.884
+Americas,Panama,1952,55.191
+Americas,Panama,1957,59.201
+Americas,Panama,1962,61.817
+Americas,Panama,1967,64.071
+Americas,Paraguay,1952,62.649
+Americas,Paraguay,1957,63.196
+Americas,Paraguay,1962,64.361
+Americas,Paraguay,1967,64.951
+Americas,Peru,1952,43.902
+Americas,Peru,1957,46.263
+Americas,Peru,1962,49.096
+Americas,Peru,1967,51.445
+Americas,Puerto Rico,1952,64.28
+Americas,Puerto Rico,1957,68.54
+Americas,Puerto Rico,1962,69.62
+Americas,Puerto Rico,1967,71.1
+Americas,Trinidad and Tobago,1952,59.1
+Americas,Trinidad and Tobago,1957,61.8
+Americas,Trinidad and Tobago,1962,64.9
+Americas,Trinidad and Tobago,1967,65.4
+Americas,United States,1952,68.44
+Americas,United States,1957,69.49
+Americas,United States,1962,70.21
+Americas,United States,1967,70.76
+Americas,Uruguay,1952,66.071
+Americas,Uruguay,1957,67.044
+Americas,Uruguay,1962,68.253
+Americas,Uruguay,1967,68.468
+Americas,Venezuela,1952,55.088
+Americas,Venezuela,1957,57.907
+Americas,Venezuela,1962,60.77
+Americas,Venezuela,1967,63.479
+Asia,Afghanistan,1952,28.801
+Asia,Afghanistan,1957,30.332
+Asia,Afghanistan,1962,31.997
+Asia,Afghanistan,1967,34.02
+Asia,Bahrain,1952,50.939
+Asia,Bahrain,1957,53.832
+Asia,Bahrain,1962,56.923
+Asia,Bahrain,1967,59.923
+Asia,Bangladesh,1952,37.484
+Asia,Bangladesh,1957,39.348
+Asia,Bangladesh,1962,41.216
+Asia,Bangladesh,1967,43.453
+Asia,Cambodia,1952,39.417
+Asia,Cambodia,1957,41.366
+Asia,Cambodia,1962,43.415
+Asia,Cambodia,1967,45.415
+Asia,China,1952,44
+Asia,China,1957,50.54896
+Asia,China,1962,44.50136
+Asia,China,1967,58.38112
+Asia,Hong Kong China,1952,60.96
+Asia,Hong Kong China,1957,64.75
+Asia,Hong Kong China,1962,67.65
+Asia,Hong Kong China,1967,70
+Asia,India,1952,37.373
+Asia,India,1957,40.249
+Asia,India,1962,43.605
+Asia,India,1967,47.193
+Asia,Indonesia,1952,37.468
+Asia,Indonesia,1957,39.918
+Asia,Indonesia,1962,42.518
+Asia,Indonesia,1967,45.964
+Asia,Iran,1952,44.869
+Asia,Iran,1957,47.181
+Asia,Iran,1962,49.325
+Asia,Iran,1967,52.469
+Asia,Iraq,1952,45.32
+Asia,Iraq,1957,48.437
+Asia,Iraq,1962,51.457
+Asia,Iraq,1967,54.459
+Asia,Israel,1952,65.39
+Asia,Israel,1957,67.84
+Asia,Israel,1962,69.39
+Asia,Israel,1967,70.75
+Asia,Japan,1952,63.03
+Asia,Japan,1957,65.5
+Asia,Japan,1962,68.73
+Asia,Japan,1967,71.43
+Asia,Jordan,1952,43.158
+Asia,Jordan,1957,45.669
+Asia,Jordan,1962,48.126
+Asia,Jordan,1967,51.629
+Asia,Korea Dem. Rep.,1952,50.056
+Asia,Korea Dem. Rep.,1957,54.081
+Asia,Korea Dem. Rep.,1962,56.656
+Asia,Korea Dem. Rep.,1967,59.942
+Asia,Korea Rep.,1952,47.453
+Asia,Korea Rep.,1957,52.681
+Asia,Korea Rep.,1962,55.292
+Asia,Korea Rep.,1967,57.716
+Asia,Kuwait,1952,55.565
+Asia,Kuwait,1957,58.033
+Asia,Kuwait,1962,60.47
+Asia,Kuwait,1967,64.624
+Asia,Lebanon,1952,55.928
+Asia,Lebanon,1957,59.489
+Asia,Lebanon,1962,62.094
+Asia,Lebanon,1967,63.87
+Asia,Malaysia,1952,48.463
+Asia,Malaysia,1957,52.102
+Asia,Malaysia,1962,55.737
+Asia,Malaysia,1967,59.371
+Asia,Mongolia,1952,42.244
+Asia,Mongolia,1957,45.248
+Asia,Mongolia,1962,48.251
+Asia,Mongolia,1967,51.253
+Asia,Myanmar,1952,36.319
+Asia,Myanmar,1957,41.905
+Asia,Myanmar,1962,45.108
+Asia,Myanmar,1967,49.379
+Asia,Nepal,1952,36.157
+Asia,Nepal,1957,37.686
+Asia,Nepal,1962,39.393
+Asia,Nepal,1967,41.472
+Asia,Oman,1952,37.578
+Asia,Oman,1957,40.08
+Asia,Oman,1962,43.165
+Asia,Oman,1967,46.988
+Asia,Pakistan,1952,43.436
+Asia,Pakistan,1957,45.557
+Asia,Pakistan,1962,47.67
+Asia,Pakistan,1967,49.8
+Asia,Philippines,1952,47.752
+Asia,Philippines,1957,51.334
+Asia,Philippines,1962,54.757
+Asia,Philippines,1967,56.393
+Asia,Saudi Arabia,1952,39.875
+Asia,Saudi Arabia,1957,42.868
+Asia,Saudi Arabia,1962,45.914
+Asia,Saudi Arabia,1967,49.901
+Asia,Singapore,1952,60.396
+Asia,Singapore,1957,63.179
+Asia,Singapore,1962,65.798
+Asia,Singapore,1967,67.946
+Asia,Sri Lanka,1952,57.593
+Asia,Sri Lanka,1957,61.456
+Asia,Sri Lanka,1962,62.192
+Asia,Sri Lanka,1967,64.266
+Asia,Syria,1952,45.883
+Asia,Syria,1957,48.284
+Asia,Syria,1962,50.305
+Asia,Syria,1967,53.655
+Asia,Taiwan,1952,58.5
+Asia,Taiwan,1957,62.4
+Asia,Taiwan,1962,65.2
+Asia,Taiwan,1967,67.5
+Asia,Thailand,1952,50.848
+Asia,Thailand,1957,53.63
+Asia,Thailand,1962,56.061
+Asia,Thailand,1967,58.285
+Asia,Vietnam,1952,40.412
+Asia,Vietnam,1957,42.887
+Asia,Vietnam,1962,45.363
+Asia,Vietnam,1967,47.838
+Asia,West Bank and Gaza,1952,43.16
+Asia,West Bank and Gaza,1957,45.671
+Asia,West Bank and Gaza,1962,48.127
+Asia,West Bank and Gaza,1967,51.631
+Asia,Yemen Rep.,1952,32.548
+Asia,Yemen Rep.,1957,33.97
+Asia,Yemen Rep.,1962,35.18
+Asia,Yemen Rep.,1967,36.984
+Europe,Albania,1952,55.23
+Europe,Albania,1957,59.28
+Europe,Albania,1962,64.82
+Europe,Albania,1967,66.22
+Europe,Austria,1952,66.8
+Europe,Austria,1957,67.48
+Europe,Austria,1962,69.54
+Europe,Austria,1967,70.14
+Europe,Belgium,1952,68
+Europe,Belgium,1957,69.24
+Europe,Belgium,1962,70.25
+Europe,Belgium,1967,70.94
+Europe,Bosnia and Herzegovina,1952,53.82
+Europe,Bosnia and Herzegovina,1957,58.45
+Europe,Bosnia and Herzegovina,1962,61.93
+Europe,Bosnia and Herzegovina,1967,64.79
+Europe,Bulgaria,1952,59.6
+Europe,Bulgaria,1957,66.61
+Europe,Bulgaria,1962,69.51
+Europe,Bulgaria,1967,70.42
+Europe,Croatia,1952,61.21
+Europe,Croatia,1957,64.77
+Europe,Croatia,1962,67.13
+Europe,Croatia,1967,68.5
+Europe,Czech Republic,1952,66.87
+Europe,Czech Republic,1957,69.03
+Europe,Czech Republic,1962,69.9
+Europe,Czech Republic,1967,70.38
+Europe,Denmark,1952,70.78
+Europe,Denmark,1957,71.81
+Europe,Denmark,1962,72.35
+Europe,Denmark,1967,72.96
+Europe,Finland,1952,66.55
+Europe,Finland,1957,67.49
+Europe,Finland,1962,68.75
+Europe,Finland,1967,69.83
+Europe,France,1952,67.41
+Europe,France,1957,68.93
+Europe,France,1962,70.51
+Europe,France,1967,71.55
+Europe,Germany,1952,67.5
+Europe,Germany,1957,69.1
+Europe,Germany,1962,70.3
+Europe,Germany,1967,70.8
+Europe,Greece,1952,65.86
+Europe,Greece,1957,67.86
+Europe,Greece,1962,69.51
+Europe,Greece,1967,71
+Europe,Hungary,1952,64.03
+Europe,Hungary,1957,66.41
+Europe,Hungary,1962,67.96
+Europe,Hungary,1967,69.5
+Europe,Iceland,1952,72.49
+Europe,Iceland,1957,73.47
+Europe,Iceland,1962,73.68
+Europe,Iceland,1967,73.73
+Europe,Ireland,1952,66.91
+Europe,Ireland,1957,68.9
+Europe,Ireland,1962,70.29
+Europe,Ireland,1967,71.08
+Europe,Italy,1952,65.94
+Europe,Italy,1957,67.81
+Europe,Italy,1962,69.24
+Europe,Italy,1967,71.06
+Europe,Montenegro,1952,59.164
+Europe,Montenegro,1957,61.448
+Europe,Montenegro,1962,63.728
+Europe,Montenegro,1967,67.178
+Europe,Netherlands,1952,72.13
+Europe,Netherlands,1957,72.99
+Europe,Netherlands,1962,73.23
+Europe,Netherlands,1967,73.82
+Europe,Norway,1952,72.67
+Europe,Norway,1957,73.44
+Europe,Norway,1962,73.47
+Europe,Norway,1967,74.08
+Europe,Poland,1952,61.31
+Europe,Poland,1957,65.77
+Europe,Poland,1962,67.64
+Europe,Poland,1967,69.61
+Europe,Portugal,1952,59.82
+Europe,Portugal,1957,61.51
+Europe,Portugal,1962,64.39
+Europe,Portugal,1967,66.6
+Europe,Romania,1952,61.05
+Europe,Romania,1957,64.1
+Europe,Romania,1962,66.8
+Europe,Romania,1967,66.8
+Europe,Serbia,1952,57.996
+Europe,Serbia,1957,61.685
+Europe,Serbia,1962,64.531
+Europe,Serbia,1967,66.914
+Europe,Slovak Republic,1952,64.36
+Europe,Slovak Republic,1957,67.45
+Europe,Slovak Republic,1962,70.33
+Europe,Slovak Republic,1967,70.98
+Europe,Slovenia,1952,65.57
+Europe,Slovenia,1957,67.85
+Europe,Slovenia,1962,69.15
+Europe,Slovenia,1967,69.18
+Europe,Spain,1952,64.94
+Europe,Spain,1957,66.66
+Europe,Spain,1962,69.69
+Europe,Spain,1967,71.44
+Europe,Sweden,1952,71.86
+Europe,Sweden,1957,72.49
+Europe,Sweden,1962,73.37
+Europe,Sweden,1967,74.16
+Europe,Switzerland,1952,69.62
+Europe,Switzerland,1957,70.56
+Europe,Switzerland,1962,71.32
+Europe,Switzerland,1967,72.77
+Europe,Turkey,1952,43.585
+Europe,Turkey,1957,48.079
+Europe,Turkey,1962,52.098
+Europe,Turkey,1967,54.336
+Europe,United Kingdom,1952,69.18
+Europe,United Kingdom,1957,70.42
+Europe,United Kingdom,1962,70.76
+Europe,United Kingdom,1967,71.36
+Oceania,Australia,1952,69.12
+Oceania,Australia,1957,70.33
+Oceania,Australia,1962,70.93
+Oceania,Australia,1967,71.1
+Oceania,New Zealand,1952,69.39
+Oceania,New Zealand,1957,70.26
+Oceania,New Zealand,1962,71.24
+Oceania,New Zealand,1967,71.52

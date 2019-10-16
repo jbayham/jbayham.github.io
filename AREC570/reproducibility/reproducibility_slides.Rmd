@@ -1,0 +1,84 @@
+---
+title: "AREC 570: Reproducible Research"
+author: "Jude Bayham"
+date: "October 15, 2019"
+output:
+  ioslides_presentation:
+    css: styles.css
+    widescreen: yes
+    logo: figures/CSU-Ram-357.png
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Motivation
+
+Articles get retracted all of the time for not being reproducible
+
+Reproducibility is a foundational principle of the scientific process
+
+Many tools now exist to ensure reproducibility so let's use them
+
+Invest effort up front (even if you only internalize a portion of the dividends)
+
+
+## Basic Process
+
+Acquire and process data
+
+Analyze data
+
+Disseminate: write articles, present research
+
+## Organized Directory Structure
+
+```{r, out.width = "600px"}
+knitr::include_graphics("figures/dir_structure.png")
+```
+
+## Automation
+Automate as much as possible for yourself and others
+
+I strive to maintain a build script that can reproduce my dataset used to estimate regressions (and hope to extend that to produce the paper including figures)
+
+```{r, out.width = "300px"}
+knitr::include_graphics("figures/bat-file.png")
+```
+
+
+## Version Control
+
+Have you ever appended "v2" or your initials to a draft?
+
+Version control is like track changes and dropbox for code plus other extras that help develop a code project
+
+Github is my preference because well integrated with RStudio (public and private repositories)
+
+Bad form to store large datasets on their servers + unnecessary since they don't change 
+
+See https://happygitwithr.com/ for how to get started using github
+
+## Documentation
+
+Document data sources and steps you take to manipulate the data
+
+Write documentation for others (and your future self) - be as clear as possible
+
+https://github.com/ropensci/drake
+
+## Tools for data management and analysis
+| Software | Learning  | Scope | Community  | Cost |
+|----------|-----------|-------|------------|------|
+| [R](https://en.wikipedia.org/wiki/R_(programming_language))        | moderate  | extensive | large | free |
+| [Python](https://en.wikipedia.org/wiki/Python_(programming_language))   | moderate* | extensive | large | free |
+| [Stata](https://en.wikipedia.org/wiki/Stata)    | easy      | conventional data | econ | high |
+| [Matlab](https://en.wikipedia.org/wiki/MATLAB)   | moderate  | extensive | moderate* | high |
+
+
+Become proficient in one or two
+
+Other considerations: geospatial, computational speed (solvers), estimators
+
+
