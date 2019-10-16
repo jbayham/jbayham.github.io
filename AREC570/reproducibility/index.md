@@ -23,8 +23,14 @@ I will provide you some guidance but there are many ways to organize your projec
 7. Regress life expectancy on gdp per capita and display the regression table.  Don't worry about the ancillary stats.
 
 
+## Test 
 
-#### Now have someone else reproduce your code.  Think about what information you will need to give them (your documentation).
+Now have someone else reproduce your code.  Think about what information you will need to give them (your documentation).
+
+
+## Deliverable
+
+Put your project on Github or Google Drive and share it with me.
 
 
 ## Additional Resources
