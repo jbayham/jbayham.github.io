@@ -1,0 +1,142 @@
+---
+title: "AREC 570: Applied Econometrics"
+author: "Jude Bayham"
+date: "October 30, 2019"
+output:
+  ioslides_presentation: 
+    css: ../styles.css
+    logo: ../CSU-Ram-357.png
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Intro
+
+Within reduced-form approach, more attention to credible causal estimates
+
+Gold Standard: Randomization of the treatment 
+
+Techniques to recreate experimental ideal using observational data
+
+  - Difference in differences
+  - Regression discontinuity design
+  - Matching methods
+
+
+## Surrogate Variables
+
+A surrogate in this case is an intermediate variable 
+
+Surrogate condition is that outcome and treatment are independent conditional on surrogate and controls 
+
+Ex: Website change (treatment) and user engagement (outcome); surrogate is webpage visits
+
+Estimate the relation between surrogate and outcome, then use the result to impute missing outcome in experimental sample
+
+Alternatively, estimate the relation between the treatment and surrogate, then use it to impute missing treatment indicator in observation sample
+
+## Supplementary Analysis
+
+Support the credibility of the primary analysis (not finding better estimates or select competing models)
+
+Involves creative strategies to "question" the identification strategy
+
+Placebo analysis: replace the outcome of interest with an outcome that should not be affected by treatment
+
+  - Ex: Effect of winning the lottery on earnings.  Treatment randomly assigned?  
+  - Swap pre-lottery earnings for post-lottery earnings (statistically insignificant effect; power?)
+  - In RDD, other covariates shouldn't break across discontinuity; otherwise, confound treatment effect estimate
+  
+
+## Robustness and Sensitivity
+
+Leamer criticism of econometric practice of running many models and cherry picking significant results (p-hacking)
+
+Often present several combinations of controls or specifications to demonstrate the robustness of the estimate
+
+Athey-Imbens approach to sample-splitting:
+
+  - Assume model: $E[Y_i|X_i,Z_i]=\beta_0+\beta_W W + \beta_z^{\prime} Z_i$
+  - split sample based on each covariate $X_i \in {0,1}$, estimate regression using each subset 
+  - calculate $\tilde{\beta}_W = \bar{X} \hat{\beta}_{W1} + (1-\bar{X}) \hat{\beta}_{W0}$
+  - repeat for all $i$ and report standard deviation of $\tilde{\beta}_W$
+  
+## Machine Learning Methods
+
+Generally designed for a different problem: prediction rather than causal inference (counterfactual prediction)
+
+Related concepts: externaly valid causal inference should produce prediction
+
+Prediction can be agnostic to causal relationship
+
+Trade lower variance for bias
+
+Data driven model selection
+
+## Unsupervised vs. Supervised Learning
+
+Unsupervised methods find patterns, group, or reduce dimensionality
+
+  - Clustering: K-means, partitioning
+  
+Supervised methods focus on "out-of-sample" prediction - divide into *training* and *testing* sets
+
+  - Classification and Regression Trees (CART) and Random Forest
+  - Penalized regression: LASSO
+  - Boosting https://www.stata-journal.com/sjpdf.html?articlenum=st0087
+  
+## Using ML for Causal Inference
+
+Two-step LASSO
+
+  1. Estimate LASSO on outcome to find variables correlated with outcome
+  2. Estiamte LASSO on treatment to find variables correlated with treatment
+  3. Estimate regression with union
+
+## Using ML for Causal Inference CATE
+
+Conditional Average Treatment Effects (CATE) - treatment effect heterogeneity
+
+  - Causal trees: modified CART focused on minimizing MSE of treatment effect rather than outcome 
+  
+## Using ML for Causal Inference IV
+
+Instrumental Variables
+
+  - First stage of IV is often focused on prediction
+  - Use ML methods to find "good" subset or combination of instruments
+  - Weak instruments can be a significant and overlooked problem
+
+## Summary
+
+Supplementary Analysis
+
+  - Credibility tests for identification strategy
+  - Robustness and sensitivity
+  
+Machine Learning
+
+  - Focused on prediction
+  - Methods emerging to study causal relationships using ML tools
+
+
+
+<!-- ## Sample image include -->
+
+```{r eval=FALSE, include=FALSE}
+#knitr::include_graphics("figures/dir_structure.png")
+```
+
+
+<!-- ## Tools for data management and analysis -->
+<!-- | Software | Learning  | Scope | Community  | Cost | -->
+<!-- |----------|-----------|-------|------------|------| -->
+<!-- | [R](https://en.wikipedia.org/wiki/R_(programming_language))        | moderate  | extensive | large | free | -->
+<!-- | [Python](https://en.wikipedia.org/wiki/Python_(programming_language))   | moderate* | extensive | large | free | -->
+<!-- | [Stata](https://en.wikipedia.org/wiki/Stata)    | easy      | conventional data | econ | high | -->
+<!-- | [Matlab](https://en.wikipedia.org/wiki/MATLAB)   | moderate  | extensive | moderate* | high | -->
+
