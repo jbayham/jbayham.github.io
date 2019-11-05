@@ -3288,6 +3288,64 @@ height:80;
 <li>Methods emerging to study causal relationships using ML tools</li>
 </ul>
 
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Tackling False Positives</h2></hgroup><article  id="tackling-false-positives">
+
+</article></slide><slide class=""><hgroup><h2>Motivation</h2></hgroup><article  id="motivation">
+
+<p>Many studies based on an arbitrarily chosen \(\alpha=.05\) (null ritual)</p>
+
+<p>Less attention is paid to the power (Type 2 error)</p>
+
+<p>Large sample size implies low prob of Type 2 and bias toward Type 1</p>
+
+<p>Big data hubris: Often feel confident with large datasets, but many issues can exist and be amplified (sampling error, selection, measurement error)</p>
+
+<p>Propose a toolbox rather than focus on p-value –&gt; move away from &ldquo;statistical rituals&rdquo;</p>
+
+</article></slide><slide class=""><hgroup><h2>The case against p-value</h2></hgroup><article  id="the-case-against-p-value">
+
+<p>p-value measures how unlikely the observed statistic is if \(H_0\) were true</p>
+
+<p>does not measure prob that \(H_0\) is true nor the importance of the variable being tested</p>
+
+<p>Figure 1 shows that the p-val \(\Pr(F&gt;3|H_0)=.01\) [gray shade] but \(\Pr(F&lt;3|H_1)=.0001\) [red shade]</p>
+
+<p>So, odds are even lower that measured F is compatible with \(H_1\) (0.0001) than with \(H_0\) (0.01)</p>
+
+<p>We should be concerned with relative probabilities</p>
+
+</article></slide><slide class=""><hgroup><h2>Zero-probability paradox</h2></hgroup><article  id="zero-probability-paradox">
+
+<p>The hypothesis test is set up to test whether the coefficient is <em>exactly</em> 0. This is rarely our literal null hypothesis</p>
+
+<p>We can get significance with a &ldquo;large enough N&rdquo;</p>
+
+<p>Even when \(H_0\) is practically true, we can &ldquo;reject&rdquo; with large enough sample size (Type 1 error false positive increases)</p>
+
+<p>p-value cannot balance the influence of sample size against model explanatory power</p>
+
+</article></slide><slide class=""><hgroup><h2>Toolbox</h2></hgroup><article  id="toolbox">
+
+<p>&ldquo;Judgmenet is part of the art of statistics&rdquo;</p>
+
+<p>Bayes Factor: looks at the relative likelihood of observing the data given \(H_1\) versus \(H_0\). Balancing the T1 and T2 errors</p>
+
+<p>Prob that \(H_0\) is true: relevant for testing economic significance</p>
+
+<p>Adaptive significance: \(\alpha\) should decrease with sample size</p>
+
+<p>Optimal leve of significance: allows flexibility given the context and researchers priors</p>
+
+<p>Equal probability test: back out the sample size needed to balance T1 and T2 errors</p>
+
+</article></slide><slide class=""><hgroup><h2>More on large sample bias</h2></hgroup><article  id="more-on-large-sample-bias">
+
+<p>mispecification introduces bias</p>
+
+<p>more data can amplify model mispecification because the model is a simplification of the underlying process</p>
+
+<p>more units or time may introduce different data generating processes that aren’t well-described in a single model</p>
+
 <!-- ## Sample image include -->
 
 <!-- ## Tools for data management and analysis -->

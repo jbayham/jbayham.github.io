@@ -125,6 +125,66 @@ Machine Learning
 
 
 
+# Tackling False Positives
+
+## Motivation
+
+Many studies based on an arbitrarily chosen $\alpha=.05$ (null ritual)
+
+Less attention is paid to the power (Type 2 error)
+
+Large sample size implies low prob of Type 2 and bias toward Type 1
+
+Big data hubris: Often feel confident with large datasets, but many issues can exist and be amplified (sampling error, selection, measurement error)
+
+Propose a toolbox rather than focus on p-value --> move away from "statistical rituals"
+
+## The case against p-value 
+
+p-value measures how unlikely the observed statistic is if $H_0$ were true
+
+does not measure prob that $H_0$ is true nor the importance of the variable being tested
+
+Figure 1 shows that the p-val $\Pr(F>3|H_0)=.01$ [gray shade] but $\Pr(F<3|H_1)=.0001$ [red shade]
+
+So, odds are even lower that measured F is compatible with $H_1$ (0.0001) than with $H_0$ (0.01)
+
+We should be concerned with relative probabilities
+
+## Zero-probability paradox
+
+The hypothesis test is set up to test whether the coefficient is *exactly* 0.  This is rarely our literal null hypothesis
+
+We can get significance with a "large enough N"
+
+Even when $H_0$ is practically true, we can "reject" with large enough sample size (Type 1 error false positive increases)
+
+p-value cannot balance the influence of sample size against model explanatory power
+
+## Toolbox
+
+"Judgmenet is part of the art of statistics"
+
+Bayes Factor: looks at the relative likelihood of observing the data given $H_1$ versus $H_0$.  Balancing the T1 and T2 errors
+
+Prob that $H_0$ is true: relevant for testing economic significance
+
+Adaptive significance: $\alpha$ should decrease with sample size
+
+Optimal leve of significance: allows flexibility given the context and researchers priors
+
+Equal probability test: back out the sample size needed to balance T1 and T2 errors
+
+## More on large sample bias
+
+mispecification introduces bias
+
+more data can amplify model mispecification because the model is a simplification of the underlying process
+
+more units or time may introduce different data generating processes that aren't well-described in a single model
+
+
+
 <!-- ## Sample image include -->
 
 ```{r eval=FALSE, include=FALSE}
