@@ -183,7 +183,97 @@ more data can amplify model mispecification because the model is a simplificatio
 
 more units or time may introduce different data generating processes that aren't well-described in a single model
 
+# Simulation
 
+## Overview
+
+Simulation to illustrate empirical results and explore counterfactuals
+
+Simulation as a method of analysis
+
+  - economic models
+  
+  - integrated economic-??? models
+  
+Simulation to elicit data
+
+## Simulation to illustrate results
+
+Use simulation to illustrate outcomes under a counterfactual 
+
+Example: Future Fire Costs 
+
+Explore model implications by simulating fire cost under housing growth scenarios
+
+https://sites.google.com/site/judebayham/home
+
+
+## Simulation as a method
+
+Simulation is a technique used to demonstrate how a model behaves and to predict counterfactual outcomes. 
+
+The objective is to simulate reality then explore a counterfactual – what happens if we change this policy
+
+Recognize that the model builder is acting like an engineer that constructs the outcome.  The outcome isn’t a mystery but it might be counterintuitive.
+
+The challenge is to communicate the mechanisms and levers in the model that drive certain outcomes.
+
+
+## Models
+
+Macroeconomic GE models
+
+Computable General Equilibrium (also dynamic versions)
+
+Integrated models
+
+  - Bioeconomic – infectious disease, fisheries, wildfire
+  
+  - Economic-Engineering - water
+
+Agent-based models
+
+## Constructing a simulation model
+
+Define the structure of the model (similar to theory)
+
+  - Who are the agents making decisions?
+  
+  - How do they interact?
+  
+  – What is exogenous (the parameters of the model)?  
+  
+  - What is endogenous (variables solved within model)?
+  
+Derive equilibrium conditions – supply=demand, Euler equation
+
+Maybe derive estimable equations
+
+## Solving a simulation model sometimes called the inverse problem
+
+Assume parameters and run
+
+Calibration (inverse problem)
+
+  - Calibrate (or train) model parameters using observed data on endogenous variables (or model outcomes).
+
+  - Example: Given a model structure based on economic and epidemiological theory and data on prevalence rates over time, one can calibrate parameters representing the infectivity or infection probability per unit of time
+
+  - Run counterfactual scenarios
+
+## Simulation to elicit data
+
+Let people play in a simulation to understand how decisions are made
+
+Video game economics
+
+## Conclusions
+
+Broad class of model
+
+Powerful tool for understanding complex relationships
+
+Transparency is critical especially in complex models (assumptions, levers or drivers)
 
 <!-- ## Sample image include -->
 
