@@ -275,6 +275,93 @@ Powerful tool for understanding complex relationships
 
 Transparency is critical especially in complex models (assumptions, levers or drivers)
 
+
+# Qualitative and Mixed Methods
+
+## Motivation
+
+Qualitative methods generall not considered part of the economists toolkit (2-4 semesters on econometrics)
+
+Generally considered too subjective - economists don't trust people
+
+Qualitative methods have their strengths and may complement quantitative methods
+
+## Differences
+
+Open-ended vs. closed-ended questions
+
+Closed-ended questions are structured from the beginning
+
+  - reponse set is finite; respondents choose
+
+Open-ended questions are less structured
+
+Researcher can learn and adapt to discussion
+
+The goal is to recover the full picture of factors and processes at work in the respondent's thinking.
+
+## Where qualitative methods excel
+
+1. when very little is known about a topic
+
+2. when quant research already exists but questions still remain
+
+3. when iteration between interviewer and interviewee is necessary to elicit information
+
+4. when topic is sufficiently complex
+
+5. when researchers own views are of interest
+
+## Types of qual methods
+
+1. In-depth interviews
+
+2. Focus groups
+
+3. Case studies or on site visits
+
+4. Fieldwork ethnography
+
+5. Life histories
+
+6. Mixed Methods
+
+## More on mixed methods
+
+Combine qual and quant methods
+
+1. qual $\rightarrow$ quant: exploratory analysis when little is known; then develop structured data elicitation or collect secondary data
+
+2.  quant $\rightarrow$ qual: first administer large-scale survey; then follow with in-depth interviews
+
+3. qual and quant simulateneously: use qual work to understand institutional setting that produced the data
+
+## Examples
+
+Bewley/Blinder studies on why firms didn't cut wages during slack labor market conditions.  Inability to distinguish between competing theories.  Fairness and morale - not homo-economicus
+
+Contingent valuation: issues include 
+
+  1. don't necessarily think through all of the tradeoffs
+  
+  2. don't trust revenue collected will be used as stated
+  
+  3. object to putting prices on things beyond value
+  
+  4. warm glow of helping the environment
+  
+The recommended solutions involve mixed methods approach starting with focus groups or interviews
+
+## Concerns
+
+Problem: Too much room for subjectivity
+
+Solution: document procedures, comment on unique features, research in teams, cross-check findings
+
+Problem: deliberate misrepresentation by respondents to influence some outcome;  may not understand or be able to articulate why or how decisions are made (Friedman's billiards player) 
+
+Solution: train interviewers to remain objective and 
+
 <!-- ## Sample image include -->
 
 ```{r eval=FALSE, include=FALSE}
