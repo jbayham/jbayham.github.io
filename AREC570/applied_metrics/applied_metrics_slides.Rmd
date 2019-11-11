@@ -362,6 +362,101 @@ Problem: deliberate misrepresentation by respondents to influence some outcome; 
 
 Solution: train interviewers to remain objective and 
 
+
+# Writing Empirical Methods
+
+
+## Overview
+
+The objective is to clearly communicate the why and how you conducted the analysis
+
+Identification strategy
+
+Sufficient detail for reproduction - some of it may belong in an appendix
+
+  - Derivation of new estimators, computational techniques
+  
+Organization is important for clarity
+
+Audience determines level of detail
+
+## Intro
+
+Start with an overview of the section
+
+Communicate the estimation strategy
+
+
+
+## Example 1
+
+Estimation of the model follows a two-step procedure related to
+that in Berry, Levinsohn, and Pakes (1995). A rigorous
+presentation of the estimation procedure is included in a
+technical appendix that follows Bayer, McMillan, and Rueben
+(2005), including a discussion of methods for simplifying the
+computation and a description of the asymptotic properties of the
+estimator. In this section, we outline the estimation procedure,
+focusing on the identification of the model.
+
+## Example 2
+
+Our objective is to determine the factors that
+drive suppression resource allocation decisions
+across multiple fires. We use the Arellano-
+Bond (AB) systems estimator (Arellano
+and Bover 1995; Blundell and Bond 1998) to
+estimate daily resource allocation equations
+(equation [10]). This dynamic panel estimator
+is appropriate for our analysis because
+wildfire suppression is an inherently dynamic
+process and several factors that influence suppression
+resource dispatch are endogenous.
+The AB model leverages the dynamic panel
+structure of the data to identify internal instruments
+for endogenous regressors.
+
+## Example 3 Simulation
+
+We will illustrate the fundamental importance of conflict costs by simulating the model under three distinct scenarios: 
+
+  1.	A single group that chooses base location and subsequent hunting effort,
+
+  2.	Two amicable groups that both choose base location and subsequent hunting effort without fear of conflict with each other,
+
+  3.	Two rival groups that both face the cost of conflict when choosing base location and subsequent hunting effort.  
+
+We choose to compare the simulation results under these three scenarios for two reasons.  First, they demonstrate that the presence of multiple groups in a region is not a sufficient condition for the existence of buffer zones.  Second, the scenarios follow the evolution of human expansion across a region.  Scenario 1 represents ...  Scenario 2 represents ...  While scenario 3 represents ...
+
+## Example 4 Interdisciplinary; Regression and Simulation
+
+General science puts most methods in appendix with a small section at the end
+
+  - general description of the methods in the introduction
+
+Explain the parts but also how they fit together
+
+Disease avoidance
+
+
+## Identification strategy
+
+Explain the source of variation driving the result
+
+What are you controlling for and why
+
+## Speficy the model
+
+Use familiar notation when possible: letters for variables and symbols for parameters
+
+Use matrix notation when possible
+
+## Inference
+
+Remind the reader of your hypotheses and how your empirical strategy tests them
+
+How are you computing standard errors or constructing your tests
+
 <!-- ## Sample image include -->
 
 ```{r eval=FALSE, include=FALSE}
