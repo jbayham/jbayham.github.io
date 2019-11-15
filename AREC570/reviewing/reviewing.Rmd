@@ -1,0 +1,189 @@
+---
+title: "AREC 570: Reviewing"
+author: "Jude Bayham"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  ioslides_presentation: 
+    css: ../styles.css
+    logo: ../CSU-Ram-357.png
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Motivation
+
+Peer review is an essential piece of the scientific process
+
+It provides credibility to scientific research 
+
+Humans are reviewing; the process is not without problems
+
+It is often frustrating but sometimes rewarding
+
+## Publication Process
+
+1. You submit a manuscript and it goes to an editor – usually a senior person with expertise in the area.
+
+2. The editor takes a quick look and makes a decision to “desk reject” or send it along for more in depth review.
+
+3. The editor chooses reviewers based on their knowledge of the field or looking through the references.  Reviewers are not forced but asked to serve.  They may decline but are usually asked to provide alternatives.
+
+4. Return report with recommendation accept, revise, or reject
+
+5. If revise, address comments and resubmit for another round of review
+
+* Certain publications care about the significance of the contribution.  Others don’t.
+
+
+## Critiquing 
+Job of the referee is to provide expert and unambiguous advice to the editor about whether paper is publishable.
+
+Good critique deals with general flow and organization of the paper and the details of the analysis.
+
+We have spent the whole semester talking about “good” research.  Does the paper fit the description of good research.
+
+Make an effort to engage with the material that you are reading.  
+
+  - Ask questions
+
+  - Think about the topic
+
+  - Compare analysis/results with intuition.
+
+## Critiquing cont.
+
+Intend to be critical but with a goal of being constructive.  You are trying to help the author write a better paper.
+
+Be tactful and not rude but you can be direct.  There is a balance.
+
+Imagine you are writing to a colleague
+
+My tone changes if the authors ignore my point or say that they address it but do not.
+
+Avoid telling the authors to write a new paper even if you think this new paper would be more interesting/valuable.  Try to evaluate the paper in front of you.  If it doesn’t succeed, then you need to tell the editor.
+
+Avoid unnecessary self-citation 
+
+
+## Ethridge guidelines
+
+Clarity
+
+Appropriate/relevant
+
+Technical Details
+
+Contribution
+
+On each point, decide how critical an issue is for publishability
+
+When you get the review, read the paper and think about it for several days then begin to develop the critique.
+
+Golden rule.  Do unto others and you would have them do to you.
+
+## Clarity
+
+Clarity of overall thought?  
+  
+  - Does the paper guide the reader’s thinking to the objective?
+
+  - Is the flow appropriate
+
+  - Effective and efficient in meeting objective?
+
+  - Organization?
+
+  - Language appropriate/clear/consistent?
+
+You are not a copy editor.  If there are many errors, don’t bother editing.
+
+## Appropriate
+
+Appropriate for intended audience?  
+
+Think about objectives and rank of journal.
+
+The more general the journal the higher the rank because larger audience.  They select topics relevant to broader audience.
+
+May be good for academic tenure case but you may have more impact targeting a topic-specific journal
+
+## Technical Details
+
+Are the methods appropriate?
+
+Are they conducted properly?
+
+You probably cannot estimate someone’s model - may be changing.  Do the results seem reasonable?
+
+You might want to derive analytical results if possible.
+
+## Contribution
+
+Some journals care more than others
+
+Originality.  New perspective?
+
+Policy implications.  How general are the implications?
+
+## Referee Report
+
+Go to the journal’s website and see what format they want the review in.
+
+My report layout
+
+  - Brief summary: helps the editor and conveys that you understood the article
+    
+    - Objective
+
+    - Method
+
+    - Main finding
+
+  - General comments
+    
+    - Usually a conceptual critique or some aspect of the analysis with significant implications
+
+## Referee Report cont.
+
+  - Specific comments
+
+    - Itemized list referencing the page number and line number.
+    
+    - Spelling errors; issues with particular equations; unclear sentences or statements
+
+  - Recommendation to the editor
+
+    - Be clear and justify your rec
+
+    - Try to keep it parsimonious but clear
+
+    - If R&R, then specify what authors need to do
+      
+      - Robustness check; clarify or explain model or specification
+
+
+# Response to Reviewers
+
+## Rejection
+
+
+
+
+<!-- ## Sample image include -->
+
+```{r eval=FALSE, include=FALSE}
+#knitr::include_graphics("figures/dir_structure.png")
+```
+
+
+<!-- ## Tools for data management and analysis -->
+<!-- | Software | Learning  | Scope | Community  | Cost | -->
+<!-- |----------|-----------|-------|------------|------| -->
+<!-- | [R](https://en.wikipedia.org/wiki/R_(programming_language))        | moderate  | extensive | large | free | -->
+<!-- | [Python](https://en.wikipedia.org/wiki/Python_(programming_language))   | moderate* | extensive | large | free | -->
+<!-- | [Stata](https://en.wikipedia.org/wiki/Stata)    | easy      | conventional data | econ | high | -->
+<!-- | [Matlab](https://en.wikipedia.org/wiki/MATLAB)   | moderate  | extensive | moderate* | high | -->
+
