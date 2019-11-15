@@ -1,0 +1,246 @@
+---
+title: "AREC 570: Writing"
+author: "Jude Bayham"
+date: "October 30, 2019"
+output:
+  ioslides_presentation: 
+    css: ../styles.css
+    logo: ../CSU-Ram-357.png
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introduction
+
+## Intro
+
+Create slides about writing the intro
+
+# Methods and Data
+
+## Intro
+
+Section about writing methods and data sections
+
+
+# Writing Empirical Methods
+
+
+## Overview
+
+The objective is to clearly communicate the why and how you conducted the analysis
+
+Identification strategy
+
+Sufficient detail for reproduction - some of it may belong in an appendix
+
+  - Derivation of new estimators, computational techniques
+  
+Organization is important for clarity
+
+Audience determines level of detail
+
+## Intro
+
+Start with an overview of the section
+
+Communicate the estimation strategy
+
+
+
+## Example 1
+
+Estimation of the model follows a two-step procedure related to
+that in Berry, Levinsohn, and Pakes (1995). A rigorous
+presentation of the estimation procedure is included in a
+technical appendix that follows Bayer, McMillan, and Rueben
+(2005), including a discussion of methods for simplifying the
+computation and a description of the asymptotic properties of the
+estimator. In this section, we outline the estimation procedure,
+focusing on the identification of the model.
+
+## Example 2
+
+Our objective is to determine the factors that
+drive suppression resource allocation decisions
+across multiple fires. We use the Arellano-
+Bond (AB) systems estimator (Arellano
+and Bover 1995; Blundell and Bond 1998) to
+estimate daily resource allocation equations
+(equation [10]). This dynamic panel estimator
+is appropriate for our analysis because
+wildfire suppression is an inherently dynamic
+process and several factors that influence suppression
+resource dispatch are endogenous.
+The AB model leverages the dynamic panel
+structure of the data to identify internal instruments
+for endogenous regressors.
+
+## Example 3 Simulation
+
+We will illustrate the fundamental importance of conflict costs by simulating the model under three distinct scenarios: 
+
+  1.	A single group that chooses base location and subsequent hunting effort,
+
+  2.	Two amicable groups that both choose base location and subsequent hunting effort without fear of conflict with each other,
+
+  3.	Two rival groups that both face the cost of conflict when choosing base location and subsequent hunting effort.  
+
+We choose to compare the simulation results under these three scenarios for two reasons.  First, they demonstrate that the presence of multiple groups in a region is not a sufficient condition for the existence of buffer zones.  Second, the scenarios follow the evolution of human expansion across a region.  Scenario 1 represents ...  Scenario 2 represents ...  While scenario 3 represents ...
+
+## Example 4 Interdisciplinary; Regression and Simulation
+
+General science puts most methods in appendix with a small section at the end
+
+  - general description of the methods in the introduction
+
+Explain the parts but also how they fit together
+
+Disease avoidance
+
+
+## Identification strategy
+
+Explain the source of variation driving the result
+
+What are you controlling for and why
+
+## Speficy the model
+
+Use familiar notation when possible: letters for variables and symbols for parameters
+
+Use matrix notation when possible
+
+## Inference
+
+Remind the reader of your hypotheses and how your empirical strategy tests them
+
+How are you computing standard errors or constructing your tests
+
+# Writing Results
+
+## Intro
+
+The purpose of this section is to present and explain the results or findings of the research
+
+You have tested the hypotheses; what have you found?
+
+Do not simply report the results of the analysis… $\beta$ is 5 and is statistically significant.
+
+You want your results to be part of the story/narrative that you are telling your reader.
+
+## Context 
+
+You have posed a research question in a certain context
+
+You have explained how you will answer that question
+
+Now you have done the analysis and you are telling the reader what you have found… but remember to put your findings in the context of your question
+
+
+## Empirical Papers
+Explain the relationship between your independent and dependent variable(s) in the context of your research question
+
+Steer the reader to the information to support your case
+
+How well does your model fit the data?
+
+  - In sample 
+
+  - Out of sample
+
+## Table or figures
+
+Make sure to introduce the table with a clear statement signaling to the reader what they should expect to see.
+
+  - The table does not speak for itself.  
+
+Cite the specific figure in the table so that there is no ambiguity
+
+
+
+## Reporting numbers 
+
+Miller: Chicago Guide to Writing about Numbers as reported in Dudenhefer:
+
+Establish the context: How does some number compare to something more familiar?  Is it large or small?
+
+Report and interpret: what do the numbers mean in terms of your research question
+
+Use magnitudes that are easy to comprehend
+
+Think of an appropriate and useful unit/transformation/context for the result
+
+If the model is in logs, the estimates are elasticities (unitless but meaningful)
+
+Odds ratio for a logit model… 3-person households are 3 times more likely that single person households to be infected by the flu
+
+## Example
+
+In paper studying effect of Lyme risk on outdoor recreation time, our primary estimate is -.0248 minutes/day.  For one, this is the marginal effect for a single case of lyme.  It is more useful to put the result in context of the data (72 cases on average in the counties) so it is 1.54 fewer minutes per person per day or 9 and a half hours per year.  Avg trips are 73 minutes, so about 8 fewer trips on avg.
+
+
+
+
+# Writing Discussion
+
+## Intro
+
+This section is optional and can serve a flexible role
+  
+Further context for the results
+
+Additional analysis, comparison to other results or situations, can simulations help
+
+Chance to discuss the limitations of the analysis 
+
+Large game and conflict paper: we use this to compare model results with ethnographies
+## Caution
+
+Limitations: 
+  
+  - warn users where this result does not apply
+
+  
+  - delicate balance here not to trash your work
+
+Be careful that this section fits and actually adds value to your paper.  I used to use it to vent but that isn’t always useful.
+
+# Writing Conclusions
+
+## Intro
+
+Depends on existence of discussion section
+
+Explain the implications of the results.  Answer the “so what” question.
+
+Bring the results back to the broader problematic situation.  Connect the dots for the reader.
+
+This phase of the research is inductive.  
+
+## Example
+
+Fire paper: we find that more resources are dispatched to fires that threaten homes at the expense of other fires burning simultaneously.  This implies that development will continue to stress fire fighting resources and can explain part of the recent rise in cost and size of fires in the West.  This result supports policies like the fire prevention fee in CA that charges homeowners that locate in the wildland urban interface. 
+
+Not a section to simply summarize the paper (but a brief restatement of your primary result can be appropriate).
+
+
+
+<!-- ## Sample image include -->
+
+```{r eval=FALSE, include=FALSE}
+#knitr::include_graphics("figures/dir_structure.png")
+```
+
+
+<!-- ## Tools for data management and analysis -->
+<!-- | Software | Learning  | Scope | Community  | Cost | -->
+<!-- |----------|-----------|-------|------------|------| -->
+<!-- | [R](https://en.wikipedia.org/wiki/R_(programming_language))        | moderate  | extensive | large | free | -->
+<!-- | [Python](https://en.wikipedia.org/wiki/Python_(programming_language))   | moderate* | extensive | large | free | -->
+<!-- | [Stata](https://en.wikipedia.org/wiki/Stata)    | easy      | conventional data | econ | high | -->
+<!-- | [Matlab](https://en.wikipedia.org/wiki/MATLAB)   | moderate  | extensive | moderate* | high | -->
+
