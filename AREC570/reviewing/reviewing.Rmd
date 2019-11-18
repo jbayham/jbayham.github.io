@@ -169,7 +169,93 @@ My report layout
 
 ## Rejection
 
+We will all get rejections.  When rejected, try again.
 
+  - Try not to get angry; remember that this is part of the process and try to learn as much as possible from the experience
+
+  - Rejection doesn’t necessarily mean the paper is bad or wrong.
+
+  - You may want to consider reviewer comments before submitting to a new journal
+
+If a referee misunderstands your paper, it is your fault (probably)
+
+  - It is your responsibility to write a compelling a clear paper
+
+  - The reviewer probably tried to understand the paper so use their comments to figure out what area needs more clarity
+
+## Reasons for Rejection
+
+Boonpramote finds that failure to communicate contribution is the primary reason for rejection based on survey of editors.  Other reasons include:
+
+  - Poor organization: parts do not fit into a coherent whole
+
+  - Poorly written: unclear prose, amateur tone.
+
+  - Failure to connect statistical results with an economic story
+
+  - Failure to motivate story – problematic situation
+
+  - Topic is inappropriate for journal.  This can mean a few things – not large enough contribution, poor fit
+  
+## Revision
+
+You may get invited to resubmit after making changes
+
+R&R time limit – usually 6-12 months
+
+Revise well before that limit so that referees don’t forget why they liked the paper.  Choi recommends 3mo.
+
+Work on the revisions regularly if not all at once immediately.  This may help you get excited about the project again.
+
+## Revision cont.
+
+If you get asked to revise and resubmit, the editors/reviewers think that your paper has a good idea.  
+
+This may be your last chance to edit so make sure it is a polished final product.  
+
+  - This is hard because there are diminishing returns - getting those last units of improvement may require nontrivial effort levels
+
+Be optimistic and take the opportunity seriously.  
+
+Getting the R&R greatly increases your chance of acceptance.
+
+
+## Response to Reviewers
+
+Write a detailed response to reviewers
+
+Thank the reviewers (they are usually dedicating time to carefully read your work and provide constructive criticism)
+
+Indicate that you are doing everything reasonable to address the comment.  
+
+  - This may include going beyond to fix of modify something that a comment brought about.
+  
+If you can’t accommodate a reviewer’s demands, explain to the editor why and hope
+
+Don’t attack the referee.  It probably won’t help your cause.
+
+## Procedure 
+
+Cover letter to the editor explaining what you did to resolve concerns and why you think it should be reconsidered for publication.  
+
+You will also include a response to reviewers, which they will see.
+
+Address each comment directly and thoroughly
+
+Small comments about typos etc can be acknowledged with a thank you and evidence that the change has been made.
+
+
+## Larger Critiques
+
+Critiques about the conceptual framework, model specification, or some robustness check require much more depth in the response
+
+  - If you agree, thank the reviewer and explain in detail how you fixed the issue. Reference the place in the new manuscript where you addressed the comment.  Copy and paste specific excerpts into the response
+
+  - If you disagree, you need to provide justification for why you do it one way over the reviewers recommendation.
+
+You can technically ask editor questions about comments but I would ask others first
+
+Alert the editor and reviewers to any other substantive changes that you made to the manuscript.  Examples include: model changes, new data, robustness checks.  Also explain why.
 
 
 <!-- ## Sample image include -->
