@@ -1,0 +1,183 @@
+---
+title: "AREC 570: Presentation"
+author: "Jude Bayham"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  ioslides_presentation: 
+    css: ../styles.css
+    logo: ../CSU-Ram-357.png
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Intro
+
+Presentation is an essential part of the research process - for yourself and others
+
+Attention is scarce - use it effectively
+
+Present early and often - it forces you to refine your ideas and solicit feedback from others
+
+  - Early presentation: feedback on idea and directions of investigation
+  
+  - Mid: conference and or seminar to test ideas and results; identify where questions remain
+  
+  - Final (job talk): advertising polished piece of work
+  
+Go to other talks - learn by watching (and doing)
+  
+  
+## Structure
+
+The structure and organization of a talk is important (just like in a paper)
+
+Problem
+
+Contributions/Literature
+
+Definitions and data
+
+Results
+
+Conclusions
+
+
+## Problem
+
+What is the problem to be analyzed? 
+
+Why should we care about resolving the issues? 
+
+What should we expect to learn?
+
+Answers depend on the audience - don't assume too much
+
+Don't dwell on this too long
+
+State research question (explicitly and remember to deliver)
+
+## Contribution
+
+Brief overview of the approach  
+
+Preview the results
+
+State contributions in the context of the most relevant literature - you can add to lit review at the end
+
+Try to mention work of people in the audience (must in job talks)
+
+Are the main contributions positive, normative, or methodological? 
+
+External validity - how much can you generalize?
+
+How does your work connect beyond the specific context or topic?
+
+## Methods and Data
+
+Describe conceptual framework - enough detail to know what you are doing but not boring
+
+Walk the audience through the intuition - maybe a simple version of the model is warranted (Varian)
+
+Use figures and images to motivate intuition
+
+Describe data and how you compile it; briefly mention any significant modifications
+
+
+
+
+## Results
+
+Remind audience of hypotheses and set them up to expect the result
+
+Avoid long derivations (they can read the appendix)
+
+Tables should focus on key results or highlight them in a readable table
+
+Again, use figures when possible
+
+
+## Example
+
+```{r dotwhisker,warning=F}
+suppressPackageStartupMessages(library(broom))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(dotwhisker))
+# Plot regression coefficients from a single model object
+data(mtcars)
+m1 <- lm(mpg ~ wt + cyl + disp, data = mtcars)
+#dwplot(m1, vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2)) +
+#    xlab("Coefficient")
+m2 <- update(m1, . ~ . - disp)
+dwplot(list(full = m1, nodisp = m2),vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2)) +
+  xlab("Coefficient")
+```
+
+
+## Conclusion
+
+Show the audience what they should have learned from the paper
+
+Memorable takeaway message (advertisement)
+
+Implications for future work
+
+## Presentation
+
+Determine your presentation style and own it
+
+Dress appropriately and comfortably 
+
+Speak clearly and not too monotone
+
+Try to maintain good energy to keep people engaged
+
+Teaching is good practice - you can tell when you're losing the audience
+
+## Crowd Control
+
+You are the boss of the talk and are responsible for keeping the talk moving
+
+Answer questions if you know the answer; otherwise, say that you'll come back to it or follow up with the person afterwards.  I think you need to deliver on this promise to return to something.
+
+Economics departments are notorious for being hostile presentation environments - ours is not
+
+Forms of the heckler:
+
+  - Impatient: push you to get to the point quickly
+  
+  - Stubborn: has strong opinions about a modeling choice and won't let it go
+  
+  - Axe-grinder: has some issue that they love to bring up and talk about
+  
+Easy to lose control of the crowd to herd mentality
+  
+## Software
+
+Latex: beamer (signalling)
+
+Rmarkdown: can integrate existing R analysis; html slides
+
+Powerpoint: good for quick or image heavy presentations; non-econ audience - avoid gratuitous animation
+
+Google slides
+
+Prezi
+
+
+# Tables and Figures
+
+## Motivation
+
+Your goal is to communicate your argument
+
+Visual aides can efficiently communicate information
+
+Make those visuals attractive and informative
+
+Tufte
+
+
+
