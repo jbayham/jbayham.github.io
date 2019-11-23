@@ -11,6 +11,19 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
+lapply(c("tidyverse",
+         "ggridges",
+         "viridis",
+         "ggtheme",
+         "broom",
+         "dotwhisker",
+         "scales",
+         "knitr"),
+       function(x){
+         suppressPackageStartupMessages(require(x,character.only = T))
+       })
+
 ```
 
 ## Intro
@@ -102,9 +115,7 @@ Again, use figures when possible
 ## Example
 
 ```{r dotwhisker,warning=F}
-suppressPackageStartupMessages(library(broom))
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(dotwhisker))
+
 # Plot regression coefficients from a single model object
 data(mtcars)
 m1 <- lm(mpg ~ wt + cyl + disp, data = mtcars)
@@ -177,7 +188,146 @@ Visual aides can efficiently communicate information
 
 Make those visuals attractive and informative
 
-Tufte
+Tufte principles
 
 
+## Types of Graphics
+
+What is the objective of the chart? Comparison, Trend, Composition
+
+- scatter/points
+
+- bar, area, 
+
+
+## Chart Components
+
+Labels - help orient the viewer; don’t clutter
+
+Scales - define the range of the data; honesty
+
+Graphical elements - lines or bars that summarize information
+
+
+## Schwabish Principles
+
+*Show the data*: read the graphics to understand the story - make sure the data is clear 
+
+*Reduce clutter*: unnecessary ink on in the graphic that doesn't convey information (e.g., heavy gridlines, unnecessary ticks and labels, [unnecessary 3D](http://image.slidesharecdn.com/infographics1-150422093618-conversion-gate02/95/infographics-the-good-and-the-bad-7-638.jpg?cb=1429875854))
+
+  - Avoid pie [charts](https://timoelliott.com/blog/wp-content/uploads/2013/01/bar-vs-pie.jpg) 
+
+*Integrate text into the graphics*: contain enough information to stand alone; integrate legends into the graphics when possible
+
+
+
+## Color
+
+Colors evoke emotion and may have a natural relation to values
+
+- green: go, life, health, good, clean
+
+- red: hot, bad
+
+- blue: cool, water, clean
+
+When possible, use colors that also work in grayscale: [viridis](https://i.stack.imgur.com/PLfsn.png)
+
+Color blindness [test](https://images.ctfassets.net/u4vv676b8z52/6tpwrD6xE7eAVT48WiRO8G/9284182cda7c0bb02cd9cdae212c532c/color_blind_eye_exam.png)
+
+
+
+
+## Examples
+Default R graphics
+
+<center>
+```{r}
+
+
+data(diamonds)
+with(diamonds,plot(x=carat,y=price))
+```
+</center>
+## ggplot
+ggplot2 graphics
+
+<center>
+```{r}
+
+ggplot(data = diamonds, 
+       aes(x = carat, y = price, color = clarity)) +
+  geom_point(alpha=.5,stroke=0)
+```
+</center>
+
+## ggplot: densities
+```{r}
+
+data(diamonds)
+ggplot(data = diamonds, 
+       aes(x = price, y = cut, color = cut, fill = cut)) +
+  geom_density_ridges(alpha = 0.8, scale = 3) +
+  scale_fill_viridis(option = "A", discrete = TRUE) +
+  scale_color_viridis(option = "A", discrete = TRUE) + 
+  scale_x_continuous(label=dollar) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(x="Price",
+       y="",
+       title = "Diamond Price Distribution by Cut")
+
+```
+
+## ggplot: maps
+<center>
+```{r,out.width="70%"}
+include_graphics(path = "figures/percent_hms.png")
+
+```
+</center>
+
+## facebook map
+<center>
+```{r,out.width="70%"}
+include_graphics(path = "https://www.bbc.co.uk/nol/shared/spl/hi/sci_nat/10/facebook/img/facebook_conn_image_976x462.gif")
+
+```
+</center>
+
+
+## Other images
+<center>
+```{r,out.width="70%"}
+include_graphics(path = "figures/hunger_games.png")
+
+```
+</center>
+
+## Other images: Influe-venn-za
+<center>
+```{r,out.width="60%"}
+include_graphics(path = "https://i.pinimg.com/originals/52/8d/1a/528d1a4df47efbe5b1d138f871da087a.png")
+
+```
+</center>
+
+
+
+## Other images: solar
+<center>
+```{r,out.width="70%"}
+include_graphics(path = "https://d33wubrfki0l68.cloudfront.net/714d72d6d3b5e01960f3e9440d1309db2c75a8f2/9b8f6/blog/2017-12-24-solar-panel-analysis-part-3-scanning-for-objects_files/figure-html/unnamed-chunk-9-1.png")
+
+```
+</center>
+
+
+## Other images: solar 2
+<center>
+```{r,out.width="70%"}
+include_graphics(path = "https://d33wubrfki0l68.cloudfront.net/b0f273f223586bdfa722636f46151c52e640db82/03695/blog/2017-12-24-solar-panel-analysis-part-3-scanning-for-objects_files/figure-html/unnamed-chunk-10-1.png")
+
+```
+</center>
 
