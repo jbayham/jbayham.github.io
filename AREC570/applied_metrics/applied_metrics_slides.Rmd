@@ -110,6 +110,8 @@ Instrumental Variables
   - First stage of IV is often focused on prediction
   - Use ML methods to find "good" subset or combination of instruments
   - Weak instruments can be a significant and overlooked problem
+  
+[Econ-ML](http://econ-neural.net/)
 
 ## Summary
 
