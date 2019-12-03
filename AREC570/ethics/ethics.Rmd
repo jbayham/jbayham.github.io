@@ -1,0 +1,127 @@
+---
+title: "AREC 570: Ethics and Other Topics"
+author: "Jude Bayham"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  ioslides_presentation: 
+    css: ../styles.css
+    logo: ../CSU-Ram-357.png
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# lapply(c("tidyverse",
+#          "ggridges",
+#          "viridis",
+#          "ggtheme",
+#          "broom",
+#          "dotwhisker",
+#          "scales",
+#          "knitr"),
+#        function(x){
+#          suppressPackageStartupMessages(require(x,character.only = T))
+#        })
+
+```
+
+## Intro
+
+Scientific concesus forms around a body of evidence
+
+Science-based policy recommendations 
+
+Should policy recommendations be made when there is not concensus?
+
+
+
+## Paper 
+Johnston, B. C., Zeraatkar, D., Han, M. A., Vernooij, R. W., Valli, C., El Dib, R., ... & Bhatia, F. (2019). Unprocessed red meat and processed meat consumption: dietary guideline recommendations from the Nutritional Recommendations (NutriRECS) Consortium. Ann Intern Med, 171, 756-64.
+
+Existing dietary guidelines suggested limited processed and unprocessed red meat consumption
+
+Johnston et al. argue that studies underpinning guidelines aren't well-identified
+
+Conduct systematic review of the literature to assess the strength of evidence
+
+## Systematic Review
+
+Constructed panels (arguably unbiased) to review literature and complete a survey
+
+5 separate systematic reviews
+
+Focus on certainty of evidence
+
+Individual health perspective rather than society, animal welfare, environment
+
+Assessed causal relationship by focusing on cohort studies of red meat intake and dietary patterns
+
+$H_a$: stronger association of negative effects in intake studies
+
+Also evaluated values and preferences toward meat reduction (not clear whether these were econ studies)
+
+## Overview of Findings
+
+Low- to very low-certainty evidence that red meat diets increase risk of heart and cancer issues
+
+Evidence of precise effect is small in magnitude
+
+Estimates unlikely to be causal - effect size and certainty were lower for intake studies compared to dietary patterns
+
+## Certainty
+
+RCT studied small changes in meat consumption; and small sample size
+
+Observational studies limited by ability to measure consumption and dietary patterns 
+
+## Causality
+
+Observational studies limited by measurement error and confounding other dietary factors (omitted variable bias) and preferences (selection)
+
+Cohort studies follow people over long periods and don't control for other confounding
+
+
+## Conclusions
+
+Recommend a tempored warning - the health evidence for decreasing red meat consumption is weak
+
+## Epilogue
+
+[NYT investigative piece](https://www.nytimes.com/2019/10/04/well/eat/scientist-who-discredited-meat-guidelines-didnt-report-past-food-industry-ties.html) finds that lead author failed to disclose financial ties to business with interest in findings
+
+Similar episode three years prior in review of evidence to reduce sugar
+
+"They're hijacking the scientific process in a disingenuous way to sow doubt and jeopardize public health" - Dr. Dean Schillinger, professor of Medicine at the University of California, San Francisco
+
+Critizised for cherry picking via "high scientific standards"
+
+"Attempts to make dietary guidelines science-based, are doomed to failure because the evidence will never reach high standards of scientific proof," Marion Nestle, professor emeritus of nutrition, food studies and public health at New York University.
+
+[ABC Article](https://abcnews.go.com/Health/health-experts-explain-complications-red-meat-study/story?id=65980232)
+
+## continued...
+
+"Some people may think that it is ethical to tell people, from a societal perspective, based on low certainty evidence, to stop or reduce their meat consumption.  People should look at the very small risk reductions based on low quality evidence and make their own decisions." - Johnston
+
+## What do you think?
+
+Does the controversy color your intepretation of the evidence?
+
+Are advocates just sour?
+
+Are we as researchers responsible for policy recommendations?
+
+## Friday
+
+more on ethics
+
+Wansink saga
+
+predatory journals
+
+
+
+
+
+ 
