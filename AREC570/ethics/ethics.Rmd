@@ -12,17 +12,17 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
-# lapply(c("tidyverse",
-#          "ggridges",
-#          "viridis",
-#          "ggtheme",
-#          "broom",
-#          "dotwhisker",
-#          "scales",
-#          "knitr"),
-#        function(x){
-#          suppressPackageStartupMessages(require(x,character.only = T))
-#        })
+lapply(c("tidyverse",
+         "ggridges",
+         "viridis",
+         "ggtheme",
+         "broom",
+         "dotwhisker",
+         "scales",
+         "knitr"),
+       function(x){
+         suppressPackageStartupMessages(require(x,character.only = T))
+       })
 
 ```
 
@@ -112,13 +112,68 @@ Are advocates just sour?
 
 Are we as researchers responsible for policy recommendations?
 
-## Friday
+# DeMartino - On the need for professional economic ethics
 
-more on ethics
+## Overview
 
-Wansink saga
+Argument: the economics profession does not "face no pressing ethical quandaries of the sort that would justify an expenditure of intellectual resources on professional ethics."
 
-predatory journals
+Economists affect the lives of others, often substantially via policy
+
+## Why needed
+
+1) "Economists' influence comes to them by virtue of their intellectual monopoly over a subject matter that is vital to social welfare; and by virtue of their positions in the public, private and multilateral sectors that sometimes give economists institutional power."
+
+2) economic interventions typically harm some while benefitting others
+
+3) We "can't control and don't know what will be the full impact of the interventions that [we] recommend"
+
+## Epilogue
+
+We now have a code: https://www.aeaweb.org/about-aea/code-of-conduct
+
+
+
+# Wansink
+
+## Overview 
+
+```{r,out.width="15%"}
+include_graphics(path = "../figures/wansink.jpg")
+
+```
+
+http://www.brianwansink.com/
+
+Research on consumer behavior and marketing research around food
+
+## Controversy
+
+Blog post encouraging student to get more out of experimental data (p-hacking)
+
+Researchers reviewed paper and "found conclusions not supported by the data presented, and a total of 150 questionable numbers, such as impossible values, incorrect ANOVA results, and dubious p-values"
+
+Wansink refuted the accusation (Cornell initially backed him up)
+
+Ultimately "17 papers retracted (one twice) and had 15 corrections issued"
+
+Resigned from Cornell effective June 30, 2019
+
+"The practices identified included data falsification, a failure to assure data accuracy and integrity, inappropriate attribution of authorship of research publications, inappropriate research methods, failure to obtain necessary research approvals, and dual publication or submission of research findings."
+
+# Predatory Journals
+
+## Problem
+
+Recognized that researchers face incentives to publish, so create journals that you can pay to publish
+
+Little if any critical review
+
+Initially thought to be a problem in developing countries
+
+Estimates suggest that half of articles have coauthors from WB high and upper-middle income countries
+
+
 
 
 
