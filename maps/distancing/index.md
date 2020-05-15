@@ -6,7 +6,7 @@
 This interactive map is based on the smart device driven epi-economic model in Fenichel et al. 
 https://www.medrxiv.org/content/10.1101/2020.04.20.20073098v1
 
-We plan to update the map regularly.  Text last updated May 15, 2020.
+We plan to update the map regularly.  Text last updated May 15, 2020.  [Full screen map](https://jbayham.github.io/maps/distancing/distancing.html) 
 
 -----------
 
