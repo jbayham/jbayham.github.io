@@ -1,7 +1,7 @@
 
 # Mobile Device COVID-19 Simulations by US Counties
 
-<iframe id="test"  style=" height:700px; width:100%;" scrolling="no"  frameborder="0" src="https://jbayham.github.io/maps/distancing/distancing.html"></iframe>
+<iframe id="Map"  style=" height:700px; width:100%;" scrolling="no"  frameborder="0" src="https://jbayham.github.io/maps/distancing/distancing.html"></iframe>
 
 This interactive map is based on the smart device driven epi-economic model in Fenichel et al. 
 https://www.medrxiv.org/content/10.1101/2020.04.20.20073098v1
