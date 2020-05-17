@@ -12,21 +12,21 @@ We plan to update the map regularly.  Text last updated May 15, 2020.  [Full scr
 
 The map classifies counties into three epidemiological conditions base on behavior shifts measured by SafeGraph home and non_home dwell time patterns. Baseline behavior is mean behavior between January 15 and February 15. 
 
-1.	“Still Rising” – those counties where behavior may have slowed infection rates, but active cases are still rising.
+1.	*Still Rising* – those counties where behavior may have slowed infection rates, but active cases are still rising.
 
-2.	“Risk of Resurgence” – those counties where changes in behavior relative to the baseline period have reduced active cases, but where reverting back to the baseline behavior may lead to a risk of resurgence.
+2.	*Risk of Resurgence* – those counties where changes in behavior relative to the baseline period have reduced active cases, but where reverting back to the baseline behavior may lead to a risk of resurgence.
 
-3.	“Past Peak” – those counties where active cases are declining.  This may be due to changes in behavior or because the epidemic has progressed enough that there are too few susceptibles left in the population. 
+3.	*Past Peak* – those counties where active cases are declining.  This may be due to changes in behavior or because the epidemic has progressed enough that there are too few susceptibles left in the population. 
 
 ### Hover over for trajectories
 
 This section describes the figures in the popup windows that appear when you hover over a county.  There are three curves displayed in each figure:
 
-1.  "Blue" - simulation based on pre-epidemic behavior (Jan 15 - Feb 15)
+1.  <span style="color:blue">Blue - simulation based on pre-epidemic behavior (Jan 15 - Feb 15) </style> 
 
-2.  "Green" - simulation based on daily mobile device data (median home time or median away from home time) and continuing
+2.  <span style="color:green">Green - simulation based on daily mobile device data (median home time or median away from home time) and continuing  </style>
 
-3.  "Yellow" - simulation based on daily mobile device data (green curve) but then reverting to baseline behavior 
+3.  <span style="color:gold">Yellow - simulation based on daily mobile device data (green curve) but then reverting to baseline behavior  </style>
 
 4. The vertical dashed line represents the last day of mobile device data.
 
@@ -42,18 +42,19 @@ The map allows the user to explore a two-by-two assumption space. We suggest use
 
 All behavior is based on SafeGraph dwell time data. The use can use choose a model that focus on contact risk based on:
 
-1.	Dwell time in public places (Away)
+1.	*Away Time* - Dwell time in public places (Away)
 
-2.	Dwell time at home (Home)
+2.	*Home Time* - Dwell time at home (Home)
 
 
 Epidemiological models are also highly sensitive to initial conditions. Every county is simulated independently.  The user can determine whether to assume the epidemic starts 
 
+1.	*County Start* - 10 days prior to the first reported case in the county for counties that have reported a case. If a county has not reported a case, then the epidemic starts on the last day a county in the state reported a case. 
 
-1.	10 days prior to the first reported case in the state
+2.	*State Start* - 10 days prior to the first reported case in the state
 
 
-2.	10 days prior to the first reported case in the county for counties that have reported a case. If a county has not reported a case, then the epidemic starts on the last day a county in the state reported a case. 
+
 
 
 ### Recommendations 
@@ -64,7 +65,7 @@ We believe:
 1.	That in rural counties dwell time in public generally works better than dwell time at home.
 
 
-2.	Smart device data is must robust in suburban counties, followed by urban counties, followed by rural counties. 
+2.	Smart device data is most robust in suburban counties, followed by urban counties, followed by rural counties. 
 
 
 3.	Epidemiological models should not be used to predict the exact number of cases. There is no credible data source to calibrate epidemiological case and modeling hospitalizations and deaths require substantially greater assumptions. Rather the models here are useful for gauging the effect of behavioral shifts. 

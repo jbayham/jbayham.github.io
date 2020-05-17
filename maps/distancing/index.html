@@ -375,17 +375,21 @@ summary {
 <hr />
 <p>The map classifies counties into three epidemiological conditions base on behavior shifts measured by SafeGraph home and non_home dwell time patterns. Baseline behavior is mean behavior between January 15 and February 15.</p>
 <ol style="list-style-type: decimal">
-<li><p>“Still Rising” – those counties where behavior may have slowed infection rates, but active cases are still rising.</p></li>
-<li><p>“Risk of Resurgence” – those counties where changes in behavior relative to the baseline period have reduced active cases, but where reverting back to the baseline behavior may lead to a risk of resurgence.</p></li>
-<li><p>“Past Peak” – those counties where active cases are declining. This may be due to changes in behavior or because the epidemic has progressed enough that there are too few susceptibles left in the population.</p></li>
+<li><p><em>Still Rising</em> – those counties where behavior may have slowed infection rates, but active cases are still rising.</p></li>
+<li><p><em>Risk of Resurgence</em> – those counties where changes in behavior relative to the baseline period have reduced active cases, but where reverting back to the baseline behavior may lead to a risk of resurgence.</p></li>
+<li><p><em>Past Peak</em> – those counties where active cases are declining. This may be due to changes in behavior or because the epidemic has progressed enough that there are too few susceptibles left in the population.</p></li>
 </ol>
 <div id="hover-over-for-trajectories" class="section level3">
 <h3>Hover over for trajectories</h3>
 <p>This section describes the figures in the popup windows that appear when you hover over a county. There are three curves displayed in each figure:</p>
 <ol style="list-style-type: decimal">
-<li><p>“Blue” - simulation based on pre-epidemic behavior (Jan 15 - Feb 15)</p></li>
-<li><p>“Green” - simulation based on daily mobile device data (median home time or median away from home time) and continuing</p></li>
-<li><p>“Yellow” - simulation based on daily mobile device data (green curve) but then reverting to baseline behavior</p></li>
+<li><p><span style="color:blue">Blue - simulation based on pre-epidemic behavior (Jan 15 - Feb 15)</p>
+</style></li>
+<li><p><span style="color:green">Green - simulation based on daily mobile device data (median home time or median away from home time) and continuing</p>
+</style></li>
+<li><p><span style="color:gold">Yellow</p>
+</style>
+<p>simulation based on daily mobile device data (green curve) but then reverting to baseline behavior</p></li>
 <li><p>The vertical dashed line represents the last day of mobile device data.</p></li>
 </ol>
 </div>
@@ -398,13 +402,13 @@ summary {
 </ol>
 <p>All behavior is based on SafeGraph dwell time data. The use can use choose a model that focus on contact risk based on:</p>
 <ol style="list-style-type: decimal">
-<li><p>Dwell time in public places (Away)</p></li>
-<li><p>Dwell time at home (Home)</p></li>
+<li><p><em>Away Time</em> - Dwell time in public places (Away)</p></li>
+<li><p><em>Home Time</em> - Dwell time at home (Home)</p></li>
 </ol>
 <p>Epidemiological models are also highly sensitive to initial conditions. Every county is simulated independently. The user can determine whether to assume the epidemic starts</p>
 <ol style="list-style-type: decimal">
-<li><p>10 days prior to the first reported case in the state</p></li>
-<li><p>10 days prior to the first reported case in the county for counties that have reported a case. If a county has not reported a case, then the epidemic starts on the last day a county in the state reported a case.</p></li>
+<li><p><em>County Start</em> - 10 days prior to the first reported case in the county for counties that have reported a case. If a county has not reported a case, then the epidemic starts on the last day a county in the state reported a case.</p></li>
+<li><p><em>State Start</em> - 10 days prior to the first reported case in the state</p></li>
 </ol>
 </div>
 <div id="recommendations" class="section level3">
@@ -412,7 +416,7 @@ summary {
 <p>We believe:</p>
 <ol style="list-style-type: decimal">
 <li><p>That in rural counties dwell time in public generally works better than dwell time at home.</p></li>
-<li><p>Smart device data is must robust in suburban counties, followed by urban counties, followed by rural counties.</p></li>
+<li><p>Smart device data is most robust in suburban counties, followed by urban counties, followed by rural counties.</p></li>
 <li><p>Epidemiological models should not be used to predict the exact number of cases. There is no credible data source to calibrate epidemiological case and modeling hospitalizations and deaths require substantially greater assumptions. Rather the models here are useful for gauging the effect of behavioral shifts.</p></li>
 <li><p>We suggest complementary research on the nature of behavior changes in Yan et al. <a href="https://www.medrxiv.org/content/10.1101/2020.05.01.20087874v1" class="uri">https://www.medrxiv.org/content/10.1101/2020.05.01.20087874v1</a></p></li>
 </ol>
