@@ -50,7 +50,6 @@ plot.out <- bender %>%
   inner_join(df.rename)
 
 
-
 ###################################
 category_labels <- c("Still Rising","Riskier than pre-epidemic","Risk of Resurgence","Past Peak")
 #Bind map data into dataframe and make spatial
@@ -69,14 +68,9 @@ map.data <- plot.out %>%
              by=c("geoid"="fips")) %>%
   group_split(sim)
 
-
-
   
 
 #Set Palette
-# pal <- map(map.data,function(x){
-#   colorQuantile(palette = "YlOrRd", domain = x$percent.immune.helps, n = 6)
-# })
 pal_factor <- map(map.data,function(x){
   colorFactor(palette = "YlOrRd",domain = map.data$epi_effect,reverse = T)
 })
@@ -88,12 +82,13 @@ labels_hover <-
       function(x){
         sprintf(
           #"<strong>County</strong>: %s, %s  <br/> <strong>Cases Avoided</strong>: %g%%  <br/> <strong>Behavioral Effect</strong>: %s  <br/> <img src = 'https://jbayham.github.io/maps/distancing/png_simsv2/fig_%s_%s.png', width='200' height='150' > ",
-          "<strong>County</strong>: %s, %s  <br/>  <strong>Behavioral Effect</strong>: %s  <br/> <img src = 'https://jbayham.github.io/maps/distancing/png/fig_%s_%s.png', width='200' height='150' > ",
+          "<strong>County</strong>: %s, %s  <br/>  <strong>Behavioral Effect</strong>: %s  <br/> <img src = 'https://jbayham.github.io/maps/distancing/png/fig_%s_%s.png', width='250' height='180' >  <br/> <img src = 'https://jbayham.github.io/maps/distancing/time_png/time_use%s.png', width='250' height='180' >",
           x$county,
           x$state_abbr,
           #x$percent.immune.helps,
           x$epi_effect,
           x$sim,
+          x$geoid,
           x$geoid) %>%
           lapply(htmltools::HTML)
       })
@@ -225,15 +220,8 @@ m %>% saveWidget(file="distancing.html",title="Risk Map")
 
 
 
-
-
+file.copy("distancing.html",
+          "maps/distancing/distancing.html",
+          overwrite = TRUE)
+file.remove("distancing.html")
 ##############################
-#Extra stuff
-
-# addLegend("bottomright", 
-#           pal = pal, 
-#           values = ~percent.immune.helps,
-#           title = "Cases Avoided",
-#           #labFormat = labelFormat(prefix = "$"),
-#           opacity = 1
-# )
