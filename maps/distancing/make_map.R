@@ -82,7 +82,7 @@ labels_hover <-
       function(x){
         sprintf(
           #"<strong>County</strong>: %s, %s  <br/> <strong>Cases Avoided</strong>: %g%%  <br/> <strong>Behavioral Effect</strong>: %s  <br/> <img src = 'https://jbayham.github.io/maps/distancing/png_simsv2/fig_%s_%s.png', width='200' height='150' > ",
-          "<strong>County</strong>: %s, %s  <br/>  <strong>Behavioral Effect</strong>: %s  <br/> <img src = 'https://jbayham.github.io/maps/distancing/png/fig_%s_%s.png', width='250' height='180' >  <br/> <img src = 'https://jbayham.github.io/maps/distancing/time_png/time_use%s.png', width='250' height='180' >",
+          "<strong>County</strong>: %s, %s  <br/>  <strong>Behavioral Effect</strong>: %s  <br/> <img src = 'https://jbayham.github.io/maps/distancing/png/fig_%s_%s.png', width='350' height='200' >  <br/> <img src = 'https://jbayham.github.io/maps/distancing/time_png/time_use%s.png', width='350' height='200' >",
           x$county,
           x$state_abbr,
           #x$percent.immune.helps,
