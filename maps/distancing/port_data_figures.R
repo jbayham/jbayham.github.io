@@ -30,3 +30,4 @@ unzip("E:/git_site/maps/distancing/time_png.zip",
       overwrite = T)
 
 
+source("E:/git_site/maps/distancing/make_map.R")
