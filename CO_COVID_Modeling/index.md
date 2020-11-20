@@ -11,4 +11,4 @@ https://github.com/agb85/covid-19
 
 Previous documentation:
 
-- [11/04/2020](archive/SEIR_Documentation_20201104.pdf)
+- [11/04/2020](archive/SEIR_Documentation_201104.pdf)
