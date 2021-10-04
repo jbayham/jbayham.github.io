@@ -7,3 +7,5 @@ git_site.Rproj
 
 *.zip
 *.gz
+
+*.DS_Store
