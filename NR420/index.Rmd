@@ -106,6 +106,9 @@ Note that $\boldsymbol \alpha=\boldsymbol \alpha_1 - \boldsymbol \alpha_0$ and $
 # From Theory to Practice
 I will demonstrate the steps to analyze a contingent valuation survey dataset using made up data.  Then, you will use the data from Loomis et al. (2000) to nearly recreate the results in the paper. 
 
+## R and Rstudio
+[R](https://cran.r-project.org/) is a free and open source statistical computing language.  R alone does not have much of a graphical user interface - you type the commands into a console.  However, there is a companion software called [RStudio](https://www.rstudio.com/products/rstudio/download/#download) that is known as an integrated development environment.  This tutorial provides clear instructions for installing R and RStudio: https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu
+
 ## Import the Data 
 Let's begin by importing the data. First, create a folder for the lab in a directory that you can edit.  Rename the new folder "CV_Lab".  Create a new folder inside of CV_Lab called data.  
 You will find the data at the following links:  
