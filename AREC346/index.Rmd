@@ -1,0 +1,320 @@
+---
+title: "Lab: Estimating Ecosystem Service Values"  
+author: "Jude Bayham"
+date: October 8, 2021
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+---
+
+
+***
+
+<!-- Some introductory material providing background on the lab. -->
+# Introduction
+This exercise will introduce you to the valuation of ecosystem services via *contingent valuation*.  We will replicate (approximately) the following study valuing ecosystem services on the South Platte river:  
+Loomis, J., P. Kent, L. Strange, K. Fausch and A. Covich (2000). "Measuring the Total Economic Value of Restoring Ecosystem Services in an Impaired River Basin" *Ecological Economics*, 33, 103-17. DOI: https://doi.org/10.1016/S0921-8009(99)00131-7
+
+The objective of this lab exercise is to familiarize your with a particular non-market valuation technique known as the Contingent Valuation Method (CVM).  I will walk you through an example analyzing contingent valuation survey data using simulated data, and you will apply those steps to the Loomis et al. (2000) dataset.
+
+## The Study
+The South Platte River is a highly contaminated and degraded water way that is primarily used for agricultural production.  The survey sought to elicit values for an improvement in the following ecosystem services:  
+
+- natural purification of water   
+- erosion control  
+- habitat for fish and wildlife  
+- dilution of wastewater  
+- recreation use   
+
+The objective of the study was to estimate total economic value (inclusive of non-use values) so the authors chose the contingent valuation method.  The authors developed careful descriptions of the impact to ecosystem services and detailed how the proposed changes would impact the provision of these services.  The authors included detailed descriptions and a diagram illustrating how the proposed activities would restore the services.
+
+1. Dilution of wastewater: adequate river flows are important for diluting fertilizer and pesticides that run off from farm fields, wastewater discharges from treatment plants and pollutants in urban stormwater. This dilution insures the river is not toxic to fish and is safe for water-based recreation such as boating. They were then handed a color drawing that illustrated the lack of dilution along a hypothetical section of the Platte river.
+
+2. Natural purification of water: one of the most important services of streamside vegetation and wetlands is the natural purification of water. Run-off from city streets and agricultural fields contain various pollutants such as oil, pesticides, and fertilizer as well as excess soil. These pollutants are absorbed by the plants and broken down by plants and bacteria to less harmful substances. Pollutants attached to suspended soil particles are filtered out by grasses and other plants and deposited in floodplains. This process helps improve water quality.Respondants were then handed a color drawing contrasting the current condition in the upper half of the diagram to the natural purification process in the lower part of the diagram. This diagram is illustrated in black and white in Fig. 1.
+
+3. Erosion control: streamside vegetation also plays a role in the control of erosion. Plants and their roots hold stream banks and filter water. The results in clear, clean water required by fish (point to blue water and fish on the left diagram; not shown here). In the absence of vegetation, rain and melting snow erodes the stream banks and rainfall washes soil from fields directly into river. This eroded soil fills the river bottom with mud. The result is muddy water and shallow rivers that do not provide healthy habitat for fish (point to brown water on right hand side diagram; not shown here). As noted in the above text, a color diagram contrasting presence and absence of the erosion control service was presented to the respondent.
+
+4. Habitat for fish and wildlife: on the left side of the diagram (not shown) you can see the variety of vegetation along the river provides habitat for a wide range of wildlife including woodpeckers, ducks, shorebirds and deer. Trees and shrubs in floodplains offer shelter and areas for nesting and roosting of many bird species. In addition the vegetation shades the stream keeping the water cool for fish and reducing algae growth which is detrimental to fish. Streamside corridors also are important for animal migration.
+
+
+<center>
+![](figures/Loomis_figure.png)
+</center>
+
+### Survey Instrument
+
+The most important part of the contingent valuation survey is the elicitation of willingness to pay for the ecosystem service.  The investigator needs to carefully word the information and question such that the respondent understands exactly what provision or service they are agreeing to pay money for.  Importantly, the respondents should believe that there is a real chance that they will face the cost.  The following is the exact text presented to respondents in the Loomis et al. (2000) study:
+
+‘‘The purchase of water and 300,000 acres of conservation easements along 45 miles of the South Platte river from willing farmers as well as restoring these areas in natural vegetation costs a great deal of money. To fund these actions a South Platte river restoration fund has been proposed. All citizens along the front range from Denver to Fort Collins would be asked to pay an increased water bill (or rent if water is included in your rent) to:  
+
+ 1. purchase water from farmers to increase water for fish and wildlife from 17% shown in the top pie chart to 42% as shown on the lower pie chart (point to);   
+ 
+ 2. to manage the South Platte river as shown in the increased ecosystem services (point to Fig. 3) along the 45 miles of the South Platte river shown on the map (point to area).   
+ 
+  The funds collected can only be used to restore natural vegetation along 45 miles of the South Platte river and purchase water from willing farmers to increase instream flow to improve habitat for six native fish so they are not in danger of extinction.   
+  
+  If the majority of households vote in favor of the South Platte river restoration fund the 45 miles of river would look like the Fig. 3 Increased ecosystem services with increased water quality and fish and wildlife (point to increased ecosystem service; Fig. 3).  If a majority vote against, these 45 miles of the South Platte river would remain as they are today, as illustrated in current management (point to current management; Fig. 2).  
+  
+  If the South Platte river restoration fund was on the ballot in the next election and it cost your household $x each month in a higher water bill would you vote in favor or against?  
+  
+__I would vote Yes __I would vote No’’
+
+The \$x was randomly filled in with one of 12 dollar amounts (\$1, 2, 3, 5, 8, 10, 12, 20, 30, 40, 50, 100). These dollar amounts were chosen based on results from the focus group and pretest as well as the mean willingness to pay amounts from the past Platte river water quality CVM of Greenley et al. (1982).  
+
+In addition to the willingness to pay question, the investigators asked several other questions about demographic and socioeconomic information as well as attitudes toward relevant policies such as prior appropriations.  These additional data are used to control for additional factors that may influence willingness to pay.
+
+***  
+
+# Theoretical Foundations (economics)
+We will start with the theoretical foundations of non-market valuation.  Economists characterize the preferences of individuals with utility functions.  A utility function is a mathematical representation of the "happiness" derived from the consumption of goods and services.  For example, an individual may derive utility from eating chocolate bars, $U=u(x)$, where $U$ is utility and $x$ is chocolate bars.     
+<center>
+![](figures/mu.jpg)
+</center>
+
+Of course, people derive utility from many goods and services, some of which are tangible (chocolate bars) and some are not (outdoor recreation opportunities).  We can include attributes of sites into the utility function because they impact the experience.  For example, some mountain bikers enjoy steep trails with technical features while others prefer mellow rolling hills.  The preferences of these two groups (manifested in utility) influence their respective demands for mountain biking sites with these attributes. We can denote these attributes with a $q$, then the utility function becomes $U=u(x,q)$.
+
+## Random Utility Model (RUM)
+The random utility model operationalizes utility theory in order to estimate willingness to pay from a contingent valuation survey.   The utility of a respondent $j$ is 
+$$u_{ij}=u(y_j,\boldsymbol z_j,q^i,\varepsilon_{ij}) $$
+where $i=1$ is the final state (after program implemented) and $i=0$ is the status quo.  So, in the case of Loomis et al. (2000), $i=1$ corresponds to the activities undertaken to restore ecosystem services.  The household's income is $y_j$, and $\boldsymbol z_j$ is a vector of household characteristics and attributes of the choice.  Let $q^i$ be a quality indicator that depends on the state so that utility in the status quo is $u_{0j}=u(y_j,\boldsymbol z_j,q^{0},\varepsilon_{0j})$ and utility in the final state is $u_{1j}=u(y_j,\boldsymbol z_j,q^1,\varepsilon_{1j})$.  
+
+An individual would respond yes to a required payment $t_j$ (the proposed referendum) if utility in the final state net of the payment exceeded utility under the status quo.
+$$u(y_j-t_j,\boldsymbol z_j,q^1,\varepsilon_{1j}) > u(y_j,\boldsymbol z_j,q^0,\varepsilon_{0j}) $$
+However, we as researchers do not observe the random component (the error term) so we can use statistics to infer systematic decision making from a probabilistic perspective.  
+$$\Pr(yes_j)= \Pr[u(y_j-t_j,\boldsymbol z_j,q^1,\varepsilon_{1j}) > u(y_j,\boldsymbol z_j,q^0,\varepsilon_{0j})] $$
+The quality or change in state does not even need to be observed in a measurable way since people are still capable of deciding between the two states (net of the payment).
+It is common to assume that utility is linear in the observable and unobservable variables.  In this case, the the linear utility functions are 
+$$u_{1j}=\boldsymbol \alpha_1 \boldsymbol z_j + \beta_1 (y_j - t_j) + \varepsilon_{1j} ~~~~~  \text{and} ~~~~~~ u_{0j}=\boldsymbol \alpha_0 \boldsymbol z_j + \beta_0 y_j + \varepsilon_{0j} .$$  
+We can rearrange the equation, which results in the model 
+$$\Pr(yes_j)= \Pr[\boldsymbol \alpha \boldsymbol z_j +  \beta y_j - \beta_1 t_j + \varepsilon_{j}] > 0 $$
+Note that $\boldsymbol \alpha=\boldsymbol \alpha_1 - \boldsymbol \alpha_0$ and $\beta=\beta_1 - \beta_0$.  We can estimate this equation as a logistic regression model assuming the error term takes on an extreme value distribution.
+
+<!-- Model assumptions:  -->
+<!-- linear model assumes payment is small enough not to affect the marginal utility of income -->
+
+<!-- ### Willingness to Pay (WTP) -->
+<!-- See beginning of Haab ch 1.2 -->
+
+
+
+<!-- Criteria for valid measures of WTP: -->
+<!-- 1. WTP has a non-negative lower bound and an upper bound not greater than income -->
+<!-- 2. Estimation and calculation are accomplished with no arbitrary truncation -->
+<!-- 3. There is consistency between randomness for estimation and randomness for calculation -->
+
+***
+
+# From Theory to Practice
+I will demonstrate the steps to analyze a contingent valuation survey dataset using made up data.  Then, you will use the data from Loomis et al. (2000) to nearly recreate the results in the paper. 
+
+## R and Rstudio
+[R](https://cran.r-project.org/) is a free and open source statistical computing language.  R alone does not have much of a graphical user interface - you type the commands into a console.  However, there is a companion software called [RStudio](https://www.rstudio.com/products/rstudio/download/#download) that is known as an integrated development environment.  This tutorial provides clear instructions for installing R and RStudio: https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu
+
+## Import the Data 
+Let's begin by importing the data. First, create a folder for the lab in a directory that you can edit.  Rename the new folder "CV_Lab".  Create a new folder inside of CV_Lab called data.  
+You will find the data at the following links:  
+practice data - https://drive.google.com/file/d/1g4ZZlub13DLSKf81m7nyY__0vmzDtHXb/view?usp=sharing
+
+
+Note: you must login using your student CSU google account.  It should end with @rams.colostate.edu.  If you see the following image, you need to use your CSU login.  
+![](figures/google_error.png)
+
+
+***  
+
+Download the files to the folder "data".  Once you have downloaded the data, open RStudio.   
+
+Open a new script.  Set the working directory to the folder location where you downloaded the data.  If the data was downloaded to C:/jbayham/CV_lab, you would enter   
+```{r setwd, eval=FALSE}
+setwd("C:/jbayham/CV_lab")
+```
+
+Note the forward slashes.  If you copy the path from windows, be sure to replace the backslashes with forward slashes.
+You may need to load these packages along the way.  The command `library()` loads the package into the current session.  If you receive an error while loading the package, you may need to install it.  In the console type: `install.packages("package_name")` where package_name is the name of the package you will enter into the library function.
+```{r packages, message=FALSE}
+library(tidyverse)
+library(stargazer)
+library(scales)
+library(modelsummary)
+library(flextable)
+```
+
+Load the data into the object `practice.data` using the function `read_csv()`.
+
+```{r data_readin}
+practice.data <- read_csv("data/practice_data.csv") %>%
+  as.data.frame()
+```
+
+By default, R stores this data in an object known as a `data.frames`.  Data frames are just one type of object that can be stored in your workspace.   
+
+To see the structure of the data, type
+
+```{r}
+str(practice.data)
+```
+
+The command `str()` returns information about the object including its type, the variable names, the number of observations, and the data type of each variable.  The following table summarizes the data
+
+| Variable Name  | Description |
+|----------------|------------------------------------------------------------|
+| y              | A binary variable equal to 1 if respondent is willing to pay the proposed fee |
+| BID            | The proposed fee offered to individual $i$ |
+| INCOME         | The natural log of the respondents income |
+| ENVIRONMENT    | A binary variable equal to 1 if the respondent belongs to an environmental group |
+
+It is useful to generate a table of summary statistics for each variable.  
+
+```{r summary_stats}
+#This code outputs the table for you to see here
+datasummary(All(practice.data) ~ Mean + SD + Min + Max,
+            data = practice.data,
+            fmt = 2,
+            output = 'markdown')
+```
+
+```{r summary_stats_out,eval=FALSE}
+#This code outputs the table in a word document in your root folder
+datasummary(All(practice.data) ~ Mean + SD + Min + Max,
+            data = practice.data,
+            fmt = 2,
+            output = 'sumstats.docx')
+```
+
+Now we will estimate the logistic regression model using a generalized linear model command `glm()` in R.  The model is defined by the command `y ~ BID + INCOME + ENVIRONMENT`, which references variable names in the data frame `practice.data`.
+
+```{r logit_model}
+logit.model <- glm(y ~ BID + INCOME + ENVIRONMENT, 
+                   data = practice.data, 
+                   family = "binomial")
+summary(logit.model)
+```
+
+Or use `modelsummary` to generate a nicely formatted table:
+```{r logit_print}
+modelsummary(logit.model,
+             estimate = "{estimate}{stars}",
+             gof_omit = 'AIC|BIC|Log.Lik',
+             output = "markdown")
+```
+
+This option will produce a table in word.
+```{r logit_out,eval=FALSE}
+modelsummary(logit.model,
+             estimate = "{estimate}{stars}",
+             gof_omit = 'AIC|BIC|Log.Lik',
+             output = "regout.docx")
+```
+
+
+### Calculating Willingness to Pay
+
+We can use these coefficient estimates to calculate the WTP.  First, we extract the coefficient estimates and the variables used in the regression.
+```{r WTP1}
+bid.parameter <- -logit.model$coefficients[2]  #coefficient on bid variable
+preference.parameters <- logit.model$coefficients[c(1,3,4)] #other coefficients including intercept 
+individual.preferences <- model.matrix(logit.model)[,c(1,3,4)] #the variables used to estimate the model
+mean.preferences <- colMeans(individual.preferences) #Calculating the mean of each variable
+```
+
+
+After creating new objects with the numbers we need from the regression, we can calculate the mean willingness to pay per household by the formula given in Loomis et al. (2000)
+$$WTP=(1/\beta_{BID})*\ln(1+e^{\boldsymbol\beta * \bar{x}})$$
+
+```{r WTP2}
+WTP <- (1/bid.parameter)*log(1+exp(t(mean.preferences) %*% preference.parameters))
+paste(round(WTP,2))
+```
+
+The mean willigness to pay is $`r paste(round(WTP,2))` per month per household.    
+
+Now, let's calculate the willingness to pay of each individual in the survey and plot the values.
+
+```{r WTP3}
+individual.WTP <- (1/bid.parameter)*log(1+exp(individual.preferences %*% preference.parameters))
+hist(individual.WTP)
+```
+
+You can also make it look nicer with the ```ggplot``` package.
+```{r ggplot_hist,warning=F}
+practice.data %>%
+  mutate(WTP=individual.WTP,
+         ENVIRONMENT=case_when(ENVIRONMENT==0 ~ "Not Env. Group Member",
+                               ENVIRONMENT==1 ~ "Env. Group Member")) %>%
+  ggplot(aes(x=WTP,fill=ENVIRONMENT)) + 
+  geom_histogram(binwidth = .5) +
+  #stat_bin(binwidth= .5, geom="text", aes(label=..count..),vjust = -.7) +
+  labs(title="Distribution of WTP by Environmental Group Membership", x="",y="") +
+  scale_x_continuous(breaks = seq(2 , 10 , 1 ), labels = dollar) +
+  scale_fill_discrete(guide = FALSE) +
+  theme_bw() +
+  facet_wrap(~ENVIRONMENT)
+```
+
+
+***
+
+This section is for additional information.  You are not required to generate these figures for your analysis.
+
+The following figure plots the individual propensities to say yes as well as the mean person in the sample.
+
+```{r mb_curve,warning=F,message=F}
+practice.data %>%
+  mutate(propensity.yes=logit.model$fitted.values,
+         curve=1/(1+exp(-(logit.model$coefficients[2]*BID + t(colMeans(model.matrix(logit.model)[,c(1,3,4)])) %*% logit.model$coefficients[c(1,3,4)] ))),
+         ENVIRONMENT=factor(ENVIRONMENT,labels = c("Not Env. Group Member","Env. Group Member"))) %>%
+  ggplot() +
+  geom_point(aes(x=propensity.yes,y=BID)) +
+  geom_line(aes(x=curve,y=BID)) +
+  geom_hline(aes(yintercept = WTP)) +
+  xlim(c(0,1)) +
+  scale_y_continuous(breaks = seq(0 , 7 , 1 ), labels = dollar) +
+  xlab("Prob(Yes)")
+
+
+
+```
+
+The following figure plots the propensities to respond yes as a function of the bid stratified by environmental group membership.  A smoothed curve (not logit) is fitted to the data.
+
+```{r mb_curve_env,warning=F,message=F}
+practice.data %>%
+  mutate(propensity.yes=logit.model$fitted.values,
+         ENVIRONMENT=factor(ENVIRONMENT,labels = c("Not Env. Group Member","Env. Group Member"))) %>%
+  ggplot(aes(x=propensity.yes,y=BID,color=ENVIRONMENT)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("Prob(Yes)")
+
+
+```
+
+***
+# Assignment: South Platte River Study
+
+You will now analyze the survey data from Loomis et al. (2000) to find the WTP for restoring ecosystem services on the South Platte River.  
+
+Complete the analysis, respond to the following questions and report your results in MS Word (or similar).  You will need to submit your report as well as the R script file.
+
+You can download the dataset from   
+Loomis data - https://drive.google.com/file/d/1ReWOPESyleVKqyVIBJiXOFrC2O0IesQL/view?usp=sharing.  
+  
+See the paper for the regression equation that should be estimated.
+
+## Questions:  
+1. Read in the dataset in the file "loomis_data.csv".  What is the data type of each variable in the dataset?  
+
+2. Generate a table of summary statistics and place the table in your report with a brief description.  
+
+3. Estimate a logistic regression model and report the coefficient estimates in a table in your report.  Include a brief description of the results reporting the statistical significance of the coefficient estimates.
+
+4. Calculate the mean willingness to pay per household in the dataset.  Describe your result in your report.  Be sure to put your result in context.  Refer to the published article.
+
+5. Calculate the willingess to pay for each individual in the sample and plot the distribution with a histogram.  Include the figure in your report with a brief description of your results.
+
+
+***
+
+R is a very powerful and widely used analytical tool.  Best of all, it is completely free.  You can download R here: https://cran.cnr.berkeley.edu/.  You can download RStudio here: https://www.rstudio.com/products/rstudio/download/.  You can even draft documents (like the one you are reading) using a mix of text and R code in a language called [R Markdown](https://rmarkdown.rstudio.com/).
