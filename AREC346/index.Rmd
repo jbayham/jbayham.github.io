@@ -113,18 +113,15 @@ I will demonstrate the steps to analyze a contingent valuation survey dataset us
 [R](https://cran.r-project.org/) is a free and open source statistical computing language.  R alone does not have much of a graphical user interface - you type the commands into a console.  However, there is a companion software called [RStudio](https://www.rstudio.com/products/rstudio/download/#download) that is known as an integrated development environment.  This tutorial provides clear instructions for installing R and RStudio: https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu
 
 ## Import the Data 
-Let's begin by importing the data. First, create a folder for the lab in a directory that you can edit.  Rename the new folder "CV_Lab".  Create a new folder inside of CV_Lab called data.  
+Let's begin by importing the data. First, create a directory (folder) for the lab inside of a directory that you can locate and edit.  Rename the new directory `CV_Lab.`  Create a new directory inside of `CV_Lab` called `data`.  
 You will find the data at the following links:  
 [practice data](data/practice_data.csv)
 
 
-Note: you must login using your student CSU google account.  It should end with @rams.colostate.edu.  If you see the following image, you need to use your CSU login.  
-![](figures/google_error.png)
-
 
 ***  
 
-Download the files to the folder "data".  Once you have downloaded the data, open RStudio.   
+Download the files to the folder `data`.  Once you have downloaded the data, open RStudio.   
 
 Open a new script.  Set the working directory to the folder location where you downloaded the data.  If the data was downloaded to C:/jbayham/CV_lab, you would enter   
 ```{r setwd, eval=FALSE}
