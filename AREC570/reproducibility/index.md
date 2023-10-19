@@ -27,11 +27,11 @@ I will provide you some guidance but there are many ways to organize your projec
 
 Now have someone else reproduce your code.  Think about what information you will need to give them (your documentation).
 
-this is a change
-
 ## Deliverable
 
-Put your project on Github or Google Drive and share it with me.
+Option 1: Share the github repository with username: `jbayham`
+
+Option 2: Submit a zipped file to Canvas containing all of the files needed to recreate your project.
 
 
 ## Additional Resources
