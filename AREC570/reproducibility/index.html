@@ -297,23 +297,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -366,11 +360,10 @@ reproducibility. Adopting these practices may save you from
 embarrassment and will likely save you time and headache later in your
 career. This exercise is adapted from Data Carpentry’s Introduction to
 Reproducibility (<a href="https://github.com/datacarpentry/rr-intro" class="uri">https://github.com/datacarpentry/rr-intro</a>).</p>
-<p>Your goal is to produce something like the document here: <a href="https://drive.google.com/open?id=1wXkVYihU5wyU2KAzW2eFHBNH7oSRRsDn" class="uri">https://drive.google.com/open?id=1wXkVYihU5wyU2KAzW2eFHBNH7oSRRsDn</a>.
-This document was produced using R and Latex. If you use Stata, your
-figures and table will look different. I’m less concerned with the look
-of the document and more concerned with the reproducibility of the
-document.</p>
+<p>Your goal is to produce something like the document here: <a href="report.pdf">report</a>. This document was produced using R and
+Latex. If you use Stata, your figures and table will look different. I’m
+less concerned with the look of the document and more concerned with the
+reproducibility of the document.</p>
 <p>I will provide you some guidance but there are many ways to organize
 your project. The project should be reproducible and well-documented.
 Try to automate as much as you can</p>

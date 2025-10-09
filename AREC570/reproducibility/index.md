@@ -2,7 +2,7 @@
 
 Reproducibility is a foundation of science.  This exercise is designed to demonstrate the benefits of organizing an empirical project for reproducibility.  Adopting these practices may save you from embarrassment and will likely save you time and headache later in your career.  This exercise is adapted from Data Carpentry's Introduction to Reproducibility (https://github.com/datacarpentry/rr-intro).
 
-Your goal is to produce something like the document here: https://drive.google.com/open?id=1wXkVYihU5wyU2KAzW2eFHBNH7oSRRsDn.  This document was produced using R and Latex.  If you use Stata, your figures and table will look different.  I'm less concerned with the look of the document and more concerned with the reproducibility of the document.
+Your goal is to produce something like the document here: [report](report.pdf).  This document was produced using R and Latex.  If you use Stata, your figures and table will look different.  I'm less concerned with the look of the document and more concerned with the reproducibility of the document.
 
 I will provide you some guidance but there are many ways to organize your project.  The project should be reproducible and well-documented.  Try to automate as much as you can
 
