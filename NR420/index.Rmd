@@ -112,11 +112,8 @@ I will demonstrate the steps to analyze a contingent valuation survey dataset us
 ## Import the Data 
 Let's begin by importing the data. First, create a folder for the lab in a directory that you can edit.  Rename the new folder "CV_Lab".  Create a new folder inside of CV_Lab called data.  
 You will find the data at the following links:  
-practice data - https://drive.google.com/file/d/1g4ZZlub13DLSKf81m7nyY__0vmzDtHXb/view?usp=sharing
+practice data - https://colostate-my.sharepoint.com/:f:/g/personal/jbayham_colostate_edu/EqdMmUfYTWxNogSt6lZl5LYBbv2uNWNMcNgld5Ll_hCLTA?e=AclZVp
 
-
-Note: you must login using your student CSU google account.  It should end with @rams.colostate.edu.  If you see the following image, you need to use your CSU login.  
-![](figures/google_error.png)
 
 
 ***  
