@@ -110,9 +110,13 @@ I will demonstrate the steps to analyze a contingent valuation survey dataset us
 [R](https://cran.r-project.org/) is a free and open source statistical computing language.  R alone does not have much of a graphical user interface - you type the commands into a console.  However, there is a companion software called [RStudio](https://www.rstudio.com/products/rstudio/download/#download) that is known as an integrated development environment.  This tutorial provides clear instructions for installing R and RStudio: https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu
 
 ## Import the Data 
-Let's begin by importing the data. First, create a folder for the lab in a directory that you can edit.  Rename the new folder "CV_Lab".  Create a new folder inside of CV_Lab called data.  
-You will find the data at the following links:  
-practice data - https://colostate-my.sharepoint.com/:f:/g/personal/jbayham_colostate_edu/EqdMmUfYTWxNogSt6lZl5LYBbv2uNWNMcNgld5Ll_hCLTA?e=AclZVp
+Let's begin by importing the data. 
+
+- First, create a folder for the lab in a directory that you can edit.  
+- Rename the new folder `CV_Lab`.  
+- Create a new folder inside of `CV_Lab` called `data`.  
+
+You can download the data at: [practice data](https://jbayham.github.io/NR420/data/practice_data.csv)
 
 
 
@@ -126,20 +130,30 @@ setwd("C:/jbayham/CV_lab")
 ```
 
 Note the forward slashes.  If you copy the path from windows, be sure to replace the backslashes with forward slashes.
-You may need to load these packages along the way.  The command `library()` loads the package into the current session.  If you receive an error while loading the package, you may need to install it.  In the console type: `install.packages("package_name")` where package_name is the name of the package you will enter into the library function.
+You may need to load packages along the way.  The command `library()` loads the package into the current session.  If you receive an error while loading the package, you may need to install it.  In the console type: `install.packages("package_name")` where package_name is the name of the package you will enter into the library function.
 ```{r packages, message=FALSE}
-library(tidyverse)
-library(stargazer)
-library(scales)
+library(readr) #install.packages("readr") if you don't have it
+library(dplyr) #install.packages("dplyr") if you don't have it
+library(ggplot2) #install.packages("ggplot2") if you don't have it
+library(stargazer) #install.packages("stargazer") if you don't have it
+library(scales) #install.packages("scales") if you don't have it
 ```
 
 Load the data into the object `practice.data` using the function `read_csv()`.
 
 ```{r data_readin}
-practice.data <- read_csv("data/practice_data.csv")
+#Read data from your folder
+practice.data <- read_csv("data/practice_data.csv") 
+
+#Alternatively, you can read it directly from the web
+practice.data <- read_csv("https://jbayham.github.io/NR420/data/practice_data.csv")
+
 ```
 
 By default, R stores this data in an object known as a `data.frames`.  Data frames are just one type of object that can be stored in your workspace.   
+
+## Exploring the Data
+It is always a good idea to explore the data before estimating any models.  You can view the first several rows of the data frame using the command `str()`.
 
 To see the structure of the data, type
 
@@ -163,6 +177,28 @@ stargazer(practice.data %>% as.data.frame(),
           type = "text", 
           digits = 2)
 ```
+
+Let's plot the relationship between the bid amount and the proportion of respondents saying "yes" to paying the fee.  We can use the `dplyr` package to group the data by bid amount and calculate the mean response for each bid level.  Then we can plot the results using `ggplot2`.
+```{r plot_bid, message=FALSE, warning=FALSE}
+#Group bids in .5 increments
+practice.data %>%
+  mutate(BID=round(BID/.5)*.5) %>%
+  group_by(BID) %>%
+  summarize(prop.yes=mean(y)) %>%
+  ggplot(aes(x=BID,y=prop.yes)) +
+  geom_point() +
+  geom_smooth(method="lm",se=FALSE) +
+  #geom_smooth(method="glm", method.args = list(family="binomial")) +
+  scale_y_continuous(labels = scales::percent,limits = c(0,1)) +
+  scale_x_continuous(breaks = seq(0 , 7 , 1 ), labels = dollar) +
+  coord_flip() +
+  labs(title="Proportion of Yes Responses by Bid Amount", x="Bid Amount", y="Proportion Yes")
+
+
+```
+
+
+## Estimating the Logistic Regression Model
 
 Now we will estimate the logistic regression model using a generalized linear model command `glm()` in R.  The model is defined by the command `y ~ BID + INCOME + ENVIRONMENT`, which references variable names in the data frame `practice.data`.
 
@@ -235,7 +271,8 @@ The following figure plots the individual propensities to say yes as well as the
 practice.data %>%
   mutate(propensity.yes=logit.model$fitted.values,
          curve=1/(1+exp(-(logit.model$coefficients[2]*BID + t(colMeans(model.matrix(logit.model)[,c(1,3,4)])) %*% logit.model$coefficients[c(1,3,4)] ))),
-         ENVIRONMENT=factor(ENVIRONMENT,labels = c("Not Env. Group Member","Env. Group Member"))) %>%
+         ENVIRONMENT=case_when(ENVIRONMENT==0 ~ "Not Env. Group Member",
+                               ENVIRONMENT==1 ~ "Env. Group Member")) %>%
   ggplot() +
   geom_point(aes(x=propensity.yes,y=BID)) +
   geom_line(aes(x=curve,y=BID)) +
@@ -269,8 +306,7 @@ You will now analyze the survey data from Loomis et al. (2000) to find the WTP f
 
 Complete the analysis, respond to the following questions and report your results in MS Word (or similar).  You will need to submit your report as well as the R script file.
 
-You can download the dataset from   
-Loomis data - https://drive.google.com/file/d/1ReWOPESyleVKqyVIBJiXOFrC2O0IesQL/view?usp=sharing.  
+You can download the dataset here: [Loomis data](https://jbayham.github.io/NR420/data/loomis_data.csv)  
   
 See the paper for the regression equation that should be estimated.
 
