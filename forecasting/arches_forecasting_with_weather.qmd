@@ -1,7 +1,5 @@
 ---
 title: "Forecasting Arches National Park Visitation with Weather"
-subtitle: "External Predictors and Model Enhancements in R (Quarto)"
-author: "AREC 346 Teaching Example"
 date: "2025-11-04"
 format:
   html:
@@ -22,6 +20,7 @@ execute:
 This report extends the baseline visitation forecasting by incorporating weather variables. We pair readable intuition with collapsed code chunks so you can skim the narrative and expand the code as needed.
 
 What you'll see:
+
 - Data loading with weather checks
 - Feature engineering (lags, moving averages, anomalies, interactions)
 - Exploratory relationships: temperature/precipitation vs visitation, correlations
@@ -512,3 +511,6 @@ cat("   -", best_model, "with MAPE of", min(comparison$MAPE), "%\n\n")
 cat("\n=== ANALYSIS COMPLETE ===\n")
 cat("Weather-enhanced forecasting models successfully trained and evaluated.\n")
 ```
+
+
+For the complete code and data, visit the [GitHub repository](https://github.com/jbayham/jbayham.github.io/tree/master/forecasting)

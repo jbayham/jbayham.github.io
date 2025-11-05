@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="AREC 346 Teaching Example">
 <meta name="dcterms.date" content="2025-11-04">
 
 <title>Forecasting Arches National Park Visitation with Weather</title>
@@ -104,19 +103,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Forecasting Arches National Park Visitation with Weather</h1>
-<p class="subtitle lead">External Predictors and Model Enhancements in R (Quarto)</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>AREC 346 Teaching Example </p>
-          </div>
-  </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
@@ -134,7 +126,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="overview" class="level1">
 <h1>Overview</h1>
 <p>This report extends the baseline visitation forecasting by incorporating weather variables. We pair readable intuition with collapsed code chunks so you can skim the narrative and expand the code as needed.</p>
-<p>What you’ll see: - Data loading with weather checks - Feature engineering (lags, moving averages, anomalies, interactions) - Exploratory relationships: temperature/precipitation vs visitation, correlations - Train/test split (24-month holdout) - Methods: - Linear Regression (baseline vs.&nbsp;with weather vs.&nbsp;interactions) - ARIMA with external regressors (xreg) - Random Forest with weather features - Side-by-side model comparison, visualizations, and weather impact analysis</p>
+<p>What you’ll see:</p>
+<ul>
+<li>Data loading with weather checks</li>
+<li>Feature engineering (lags, moving averages, anomalies, interactions)</li>
+<li>Exploratory relationships: temperature/precipitation vs visitation, correlations</li>
+<li>Train/test split (24-month holdout)</li>
+<li>Methods:
+<ul>
+<li>Linear Regression (baseline vs.&nbsp;with weather vs.&nbsp;interactions)</li>
+<li>ARIMA with external regressors (xreg)</li>
+<li>Random Forest with weather features</li>
+</ul></li>
+<li>Side-by-side model comparison, visualizations, and weather impact analysis</li>
+</ul>
 <blockquote class="blockquote">
 <p>Data expected at <code>data/arches_with_weather.csv</code>. If missing, run <code>fetch_weather_data.R</code> first.</p>
 </blockquote>
@@ -1150,6 +1155,7 @@ Weather Variable Effects (Linear Model):</code></pre>
 <pre><code>Weather-enhanced forecasting models successfully trained and evaluated.</code></pre>
 </div>
 </div>
+<p>For the complete code and data, visit the <a href="https://github.com/jbayham/jbayham.github.io/tree/master/forecasting">GitHub repository</a></p>
 </section>
 </section>
 

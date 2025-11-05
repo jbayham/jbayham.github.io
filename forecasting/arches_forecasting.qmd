@@ -1,7 +1,6 @@
 ---
 title: "Forecasting Arches National Park Visitation"
-subtitle: "Multiple Forecasting Methods in R (Quarto)"
-author: "AREC 346 Teaching Example"
+subtitle: "Forecasting Methods in R"
 date: "2025-11-04"
 format:
   html:
@@ -527,3 +526,5 @@ cat("   - Account for external factors (economic conditions, marketing, etc.)\n\
 
 cat("\n=== ANALYSIS COMPLETE ===\n")
 ```
+
+For the complete code and data, visit the [GitHub repository](https://github.com/jbayham/jbayham.github.io/tree/master/forecasting)
