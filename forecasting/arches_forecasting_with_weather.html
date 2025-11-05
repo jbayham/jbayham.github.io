@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="AREC 346 Teaching Example">
+<meta name="dcterms.date" content="2025-11-04">
+
+<title>Forecasting Arches National Park Visitation with Weather</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="arches_forecasting_with_weather_files/libs/clipboard/clipboard.min.js"></script>
+<script src="arches_forecasting_with_weather_files/libs/quarto-html/quarto.js"></script>
+<script src="arches_forecasting_with_weather_files/libs/quarto-html/popper.min.js"></script>
+<script src="arches_forecasting_with_weather_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="arches_forecasting_with_weather_files/libs/quarto-html/anchor.min.js"></script>
+<link href="arches_forecasting_with_weather_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="arches_forecasting_with_weather_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="arches_forecasting_with_weather_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="arches_forecasting_with_weather_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="arches_forecasting_with_weather_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">1) Load Data</a></li>
+  <li><a href="#feature-engineering" id="toc-feature-engineering" class="nav-link" data-scroll-target="#feature-engineering">2) Feature Engineering</a></li>
+  <li><a href="#exploratory-analysis" id="toc-exploratory-analysis" class="nav-link" data-scroll-target="#exploratory-analysis">3) Exploratory Analysis</a></li>
+  <li><a href="#traintest-split" id="toc-traintest-split" class="nav-link" data-scroll-target="#traintest-split">4) Train–Test Split</a></li>
+  <li><a href="#method-1-linear-regression-with-weather" id="toc-method-1-linear-regression-with-weather" class="nav-link" data-scroll-target="#method-1-linear-regression-with-weather">5) Method 1: Linear Regression with Weather</a></li>
+  <li><a href="#method-2-arima-with-external-regressors" id="toc-method-2-arima-with-external-regressors" class="nav-link" data-scroll-target="#method-2-arima-with-external-regressors">6) Method 2: ARIMA with External Regressors</a></li>
+  <li><a href="#method-3-random-forest-with-weather" id="toc-method-3-random-forest-with-weather" class="nav-link" data-scroll-target="#method-3-random-forest-with-weather">7) Method 3: Random Forest with Weather</a></li>
+  <li><a href="#model-comparison" id="toc-model-comparison" class="nav-link" data-scroll-target="#model-comparison">8) Model Comparison</a></li>
+  <li><a href="#visualizations-forecast-comparisons-weather-impact" id="toc-visualizations-forecast-comparisons-weather-impact" class="nav-link" data-scroll-target="#visualizations-forecast-comparisons-weather-impact">9) Visualizations: Forecast Comparisons &amp; Weather Impact</a></li>
+  <li><a href="#weather-impact-analysis" id="toc-weather-impact-analysis" class="nav-link" data-scroll-target="#weather-impact-analysis">10) Weather Impact Analysis</a></li>
+  <li><a href="#key-insights" id="toc-key-insights" class="nav-link" data-scroll-target="#key-insights">11) Key Insights</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Forecasting Arches National Park Visitation with Weather</h1>
+<p class="subtitle lead">External Predictors and Model Enhancements in R (Quarto)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>AREC 346 Teaching Example </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 4, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>This report extends the baseline visitation forecasting by incorporating weather variables. We pair readable intuition with collapsed code chunks so you can skim the narrative and expand the code as needed.</p>
+<p>What you’ll see: - Data loading with weather checks - Feature engineering (lags, moving averages, anomalies, interactions) - Exploratory relationships: temperature/precipitation vs visitation, correlations - Train/test split (24-month holdout) - Methods: - Linear Regression (baseline vs.&nbsp;with weather vs.&nbsp;interactions) - ARIMA with external regressors (xreg) - Random Forest with weather features - Side-by-side model comparison, visualizations, and weather impact analysis</p>
+<blockquote class="blockquote">
+<p>Data expected at <code>data/arches_with_weather.csv</code>. If missing, run <code>fetch_weather_data.R</code> first.</p>
+</blockquote>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>We load the required packages. Uncomment the working directory line if needed.</p>
+<div class="cell">
+<details>
+<summary>Load packages and optional working directory</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional: set working directory to this project (adjust path as needed)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># setwd("~/Library/CloudStorage/OneDrive-Colostate/teaching/arec_346/other_material/forecast")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(zoo)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="load-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-data">1) Load Data</h2>
+<p>We read the pre-joined visitation + weather dataset and show basic structure. If the file is missing, we stop and instruct how to obtain it.</p>
+<div class="cell">
+<details>
+<summary>Read arches_with_weather.csv and inspect</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== LOADING DATA ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== LOADING DATA ===</code></pre>
+</div>
+<details>
+<summary>Read arches_with_weather.csv and inspect</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/arches_with_weather.csv"</span>)) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Weather data not found. Please run 'fetch_weather_data.R' first.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Falling back to regular forecasting without weather variables.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Run fetch_weather_data.R to get weather data"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>full_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/arches_with_weather.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Loaded data:"</span>, <span class="fu">nrow</span>(full_data), <span class="st">"observations</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loaded data: 552 observations</code></pre>
+</div>
+<details>
+<summary>Read arches_with_weather.csv and inspect</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Date range:"</span>, <span class="fu">as.character</span>(<span class="fu">min</span>(full_data<span class="sc">$</span>Date)), <span class="st">"to"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.character</span>(<span class="fu">max</span>(full_data<span class="sc">$</span>Date)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Date range: 1979-01-01 to 2024-12-01 </code></pre>
+</div>
+<details>
+<summary>Read arches_with_weather.csv and inspect</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Available variables:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Available variables:</code></pre>
+</div>
+<details>
+<summary>Read arches_with_weather.csv and inspect</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">names</span>(full_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Date"               "Year"               "Month"             
+ [4] "RecreationVisits"   "TempMax_Mean"       "TempMin_Mean"      
+ [7] "TempMean"           "TempRange"          "TotalPrecipitation"
+[10] "AvgPrecipitation"   "PrecipDays"         "PrecipHours"       
+[13] "AvgWindSpeed"       "MaxWindSpeed"       "TotalSunshine"     
+[16] "AvgSunshine"        "DaysInMonth"        "MonthName"         </code></pre>
+</div>
+</div>
+</section>
+<section id="feature-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="feature-engineering">2) Feature Engineering</h2>
+<p>We create time indices, calendar features, lags, rolling means, weather anomalies, interactions, and seasonal indicators to help models learn richer patterns.</p>
+<div class="cell">
+<details>
+<summary>Build time, lag, rolling, anomaly, and interaction features</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== FEATURE ENGINEERING ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== FEATURE ENGINEERING ===</code></pre>
+</div>
+<details>
+<summary>Build time, lag, rolling, anomaly, and interaction features</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>full_data <span class="ot">&lt;-</span> full_data <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Date) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Time index</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">TimeIndex =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calendar features</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">MonthFactor =</span> <span class="fu">factor</span>(Month),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quarter =</span> <span class="fu">quarter</span>(Date),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">MonthName =</span> <span class="fu">month</span>(Date, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Lag features (previous year same month)</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Visits_Lag12 =</span> <span class="fu">lag</span>(RecreationVisits, <span class="dv">12</span>),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Weather lags</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Temp_Lag1 =</span> <span class="fu">lag</span>(TempMean, <span class="dv">1</span>),</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Precip_Lag1 =</span> <span class="fu">lag</span>(TotalPrecipitation, <span class="dv">1</span>),</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Rolling visit stats</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Visits_MA3 =</span> <span class="fu">rollmean</span>(RecreationVisits, <span class="at">k =</span> <span class="dv">3</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">align =</span> <span class="st">"right"</span>),</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">Visits_MA12 =</span> <span class="fu">rollmean</span>(RecreationVisits, <span class="at">k =</span> <span class="dv">12</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">align =</span> <span class="st">"right"</span>),</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Weather anomalies (relative to overall mean)</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">TempAnomaly =</span> TempMean <span class="sc">-</span> <span class="fu">mean</span>(TempMean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">PrecipAnomaly =</span> TotalPrecipitation <span class="sc">-</span> <span class="fu">mean</span>(TotalPrecipitation, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Interaction term</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">TempSunshine =</span> TempMean <span class="sc">*</span> AvgSunshine,</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Seasonal weather indicators</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">IsSummer =</span> <span class="fu">ifelse</span>(Month <span class="sc">%in%</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">IsWinter =</span> <span class="fu">ifelse</span>(Month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">IsPleasantWeather =</span> <span class="fu">ifelse</span>(TempMean <span class="sc">&gt;</span> <span class="dv">50</span> <span class="sc">&amp;</span> TempMean <span class="sc">&lt;</span> <span class="dv">85</span> <span class="sc">&amp;</span> TotalPrecipitation <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Features created</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Features created</code></pre>
+</div>
+</div>
+</section>
+<section id="exploratory-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-analysis">3) Exploratory Analysis</h2>
+<p>We visualize how weather relates to visitation and examine a simple correlation matrix.</p>
+<div class="cell">
+<details>
+<summary>Temp vs visitation, precip vs visitation, correlations</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== WEATHER-VISITATION RELATIONSHIPS ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== WEATHER-VISITATION RELATIONSHIPS ===</code></pre>
+</div>
+<details>
+<summary>Temp vs visitation, precip vs visitation, correlations</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(full_data, <span class="fu">aes</span>(<span class="at">x =</span> TempMean, <span class="at">y =</span> RecreationVisits, <span class="at">color =</span> MonthName)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Temperature vs. Visitation"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Colored by month"</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Average Temperature (°F)"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Recreation Visits"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Month"</span>) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="arches_forecasting_with_weather_files/figure-html/eda-1.png" class="img-fluid" width="768"></p>
+</div>
+<details>
+<summary>Temp vs visitation, precip vs visitation, correlations</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(full_data, <span class="fu">aes</span>(<span class="at">x =</span> TotalPrecipitation, <span class="at">y =</span> RecreationVisits)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Precipitation vs. Visitation"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Total Precipitation (inches)"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Recreation Visits"</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="arches_forecasting_with_weather_files/figure-html/eda-2.png" class="img-fluid" width="768"></p>
+</div>
+<details>
+<summary>Temp vs visitation, precip vs visitation, correlations</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>weather_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RecreationVisits"</span>, <span class="st">"TempMean"</span>, <span class="st">"TotalPrecipitation"</span>,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"AvgSunshine"</span>, <span class="st">"AvgWindSpeed"</span>, <span class="st">"PrecipDays"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(full_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">all_of</span>(weather_vars)), <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Correlation Matrix:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Correlation Matrix:</code></pre>
+</div>
+<details>
+<summary>Temp vs visitation, precip vs visitation, correlations</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">round</span>(cor_matrix, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   RecreationVisits TempMean TotalPrecipitation AvgSunshine
+RecreationVisits              1.000    0.724             -0.256       0.670
+TempMean                      0.724    1.000             -0.298       0.909
+TotalPrecipitation           -0.256   -0.298              1.000      -0.368
+AvgSunshine                   0.670    0.909             -0.368       1.000
+AvgWindSpeed                  0.642    0.597             -0.246       0.711
+PrecipDays                   -0.208   -0.242              0.706      -0.238
+                   AvgWindSpeed PrecipDays
+RecreationVisits          0.642     -0.208
+TempMean                  0.597     -0.242
+TotalPrecipitation       -0.246      0.706
+AvgSunshine               0.711     -0.238
+AvgWindSpeed              1.000     -0.059
+PrecipDays               -0.059      1.000</code></pre>
+</div>
+</div>
+</section>
+<section id="traintest-split" class="level2">
+<h2 class="anchored" data-anchor-id="traintest-split">4) Train–Test Split</h2>
+<p>We hold out the last 24 months for evaluation to simulate future forecasting.</p>
+<div class="cell">
+<details>
+<summary>Create 24-month holdout test set</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== TRAIN-TEST SPLIT ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== TRAIN-TEST SPLIT ===</code></pre>
+</div>
+<details>
+<summary>Create 24-month holdout test set</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>train_size <span class="ot">&lt;-</span> <span class="fu">nrow</span>(full_data) <span class="sc">-</span> <span class="dv">24</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> full_data[<span class="dv">1</span><span class="sc">:</span>train_size, ]</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> full_data[(train_size <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">nrow</span>(full_data), ]</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Training data:"</span>, <span class="fu">nrow</span>(train_data), <span class="st">"observations</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training data: 528 observations</code></pre>
+</div>
+<details>
+<summary>Create 24-month holdout test set</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Test data:"</span>, <span class="fu">nrow</span>(test_data), <span class="st">"observations</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test data: 24 observations</code></pre>
+</div>
+</div>
+</section>
+<section id="method-1-linear-regression-with-weather" class="level2">
+<h2 class="anchored" data-anchor-id="method-1-linear-regression-with-weather">5) Method 1: Linear Regression with Weather</h2>
+<p>We compare three linear models: baseline (trend + month), with weather covariates, and with interactions.</p>
+<div class="cell">
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== LINEAR REGRESSION WITH WEATHER VARIABLES ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== LINEAR REGRESSION WITH WEATHER VARIABLES ===</code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>lm_baseline <span class="ot">&lt;-</span> <span class="fu">lm</span>(RecreationVisits <span class="sc">~</span> TimeIndex <span class="sc">+</span> MonthFactor, <span class="at">data =</span> train_data)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>lm_weather <span class="ot">&lt;-</span> <span class="fu">lm</span>(RecreationVisits <span class="sc">~</span> TimeIndex <span class="sc">+</span> MonthFactor <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                   TempMean <span class="sc">+</span> TotalPrecipitation <span class="sc">+</span> AvgSunshine <span class="sc">+</span> AvgWindSpeed,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> train_data)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>lm_weather_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(RecreationVisits <span class="sc">~</span> TimeIndex <span class="sc">+</span> MonthFactor <span class="sc">+</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                        TempMean <span class="sc">+</span> TotalPrecipitation <span class="sc">+</span> AvgSunshine <span class="sc">+</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                        AvgWindSpeed <span class="sc">+</span> TempSunshine <span class="sc">+</span> IsPleasantWeather,</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> train_data)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Model Comparison (Training) ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- Model Comparison (Training) ---</code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Baseline R²:"</span>, <span class="fu">summary</span>(lm_baseline)<span class="sc">$</span>r.squared, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Baseline R²: 0.8394198 </code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"With Weather R²:"</span>, <span class="fu">summary</span>(lm_weather)<span class="sc">$</span>r.squared, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>With Weather R²: 0.8446313 </code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"With Weather + Interactions R²:"</span>, <span class="fu">summary</span>(lm_weather_full)<span class="sc">$</span>r.squared, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>With Weather + Interactions R²: 0.844841 </code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Best Linear Model Summary ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- Best Linear Model Summary ---</code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(lm_weather_full))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = RecreationVisits ~ TimeIndex + MonthFactor + TempMean + 
+    TotalPrecipitation + AvgSunshine + AvgWindSpeed + TempSunshine + 
+    IsPleasantWeather, data = train_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-147689  -15212   -1933   12821   66761 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        -41126.423  57091.446  -0.720 0.471634    
+TimeIndex             195.750      7.295  26.832  &lt; 2e-16 ***
+MonthFactor2         2254.679   6864.141   0.328 0.742690    
+MonthFactor3        45542.194  12474.999   3.651 0.000289 ***
+MonthFactor4        65387.831  18317.677   3.570 0.000391 ***
+MonthFactor5        97530.055  22962.609   4.247 2.57e-05 ***
+MonthFactor6       101702.585  27063.640   3.758 0.000191 ***
+MonthFactor7        96633.383  27246.176   3.547 0.000426 ***
+MonthFactor8        89008.610  24005.205   3.708 0.000232 ***
+MonthFactor9        82205.991  19203.625   4.281 2.23e-05 ***
+MonthFactor10       43327.987  13178.399   3.288 0.001080 ** 
+MonthFactor11        6226.977   6987.795   0.891 0.373285    
+MonthFactor12       -1997.868   5086.027  -0.393 0.694620    
+TempMean             1694.695   1109.493   1.527 0.127270    
+TotalPrecipitation   -717.848   2858.641  -0.251 0.801827    
+AvgSunshine         -4184.523   6236.965  -0.671 0.502574    
+AvgWindSpeed          914.048    703.935   1.298 0.194710    
+TempSunshine          -79.428    105.557  -0.752 0.452118    
+IsPleasantWeather    1735.700   3886.363   0.447 0.655344    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 22800 on 509 degrees of freedom
+Multiple R-squared:  0.8448,    Adjusted R-squared:  0.8394 
+F-statistic:   154 on 18 and 509 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions on test set</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>lm_pred_baseline <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm_baseline, <span class="at">newdata =</span> test_data)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>lm_pred_weather  <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm_weather,  <span class="at">newdata =</span> test_data)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>lm_pred_weather_full <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm_weather_full, <span class="at">newdata =</span> test_data)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy helper</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>calc_metrics <span class="ot">&lt;-</span> <span class="cf">function</span>(actual, predicted, model_name) {</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  mae <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(actual <span class="sc">-</span> predicted), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((actual <span class="sc">-</span> predicted)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  mape <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>((actual <span class="sc">-</span> predicted) <span class="sc">/</span> actual), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, model_name, <span class="st">":</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  MAE: "</span>, <span class="fu">format</span>(mae, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  RMSE:"</span>, <span class="fu">format</span>(rmse, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  MAPE:"</span>, <span class="fu">round</span>(mape, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="at">MAE =</span> mae, <span class="at">RMSE =</span> rmse, <span class="at">MAPE =</span> mape))</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Test Set Performance ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- Test Set Performance ---</code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>metrics_lm_baseline <span class="ot">&lt;-</span> <span class="fu">calc_metrics</span>(test_data<span class="sc">$</span>RecreationVisits, lm_pred_baseline,  <span class="st">"LM Baseline (no weather)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+LM Baseline (no weather):
+  MAE: 18,865
+  RMSE:21,483
+  MAPE:27.89%</code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>metrics_lm_weather  <span class="ot">&lt;-</span> <span class="fu">calc_metrics</span>(test_data<span class="sc">$</span>RecreationVisits, lm_pred_weather,   <span class="st">"LM with Weather"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+LM with Weather:
+  MAE: 18,672
+  RMSE:22,358
+  MAPE:29.03%</code></pre>
+</div>
+<details>
+<summary>Fit baseline vs weather vs interaction models and score</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>metrics_lm_full     <span class="ot">&lt;-</span> <span class="fu">calc_metrics</span>(test_data<span class="sc">$</span>RecreationVisits, lm_pred_weather_full, <span class="st">"LM with Weather + Interactions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+LM with Weather + Interactions:
+  MAE: 18,186
+  RMSE:21,976
+  MAPE:28.66%</code></pre>
+</div>
+</div>
+</section>
+<section id="method-2-arima-with-external-regressors" class="level2">
+<h2 class="anchored" data-anchor-id="method-2-arima-with-external-regressors">6) Method 2: ARIMA with External Regressors</h2>
+<p>We provide weather variables as external regressors (xreg) to ARIMA to capture exogenous effects on visitation.</p>
+<div class="cell">
+<details>
+<summary>Fit ARIMA baseline and ARIMA+xreg; compare metrics</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== ARIMA WITH EXTERNAL REGRESSORS ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== ARIMA WITH EXTERNAL REGRESSORS ===</code></pre>
+</div>
+<details>
+<summary>Fit ARIMA baseline and ARIMA+xreg; compare metrics</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>train_xreg <span class="ot">&lt;-</span> train_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(TempMean, TotalPrecipitation, AvgSunshine) <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>()</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>test_xreg  <span class="ot">&lt;-</span> test_data  <span class="sc">%&gt;%</span> <span class="fu">select</span>(TempMean, TotalPrecipitation, AvgSunshine) <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>()</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>train_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(train_data<span class="sc">$</span>RecreationVisits,</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">start =</span> <span class="fu">c</span>(train_data<span class="sc">$</span>Year[<span class="dv">1</span>], train_data<span class="sc">$</span>Month[<span class="dv">1</span>]),</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>arima_baseline <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(train_ts, <span class="at">seasonal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>arima_baseline_fc <span class="ot">&lt;-</span> <span class="fu">forecast</span>(arima_baseline, <span class="at">h =</span> <span class="dv">24</span>)</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Fitting ARIMA with external regressors...</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Fitting ARIMA with external regressors...</code></pre>
+</div>
+<details>
+<summary>Fit ARIMA baseline and ARIMA+xreg; compare metrics</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>arima_weather <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(train_ts, <span class="at">xreg =</span> train_xreg, <span class="at">seasonal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- ARIMA with Weather Summary ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- ARIMA with Weather Summary ---</code></pre>
+</div>
+<details>
+<summary>Fit ARIMA baseline and ARIMA+xreg; compare metrics</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(arima_weather))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: train_ts 
+Regression with ARIMA(1,0,1)(0,1,2)[12] errors 
+
+Coefficients:
+         ar1     ma1     sma1    sma2     drift  TempMean  TotalPrecipitation
+      0.5849  0.4109  -0.7167  0.1056  211.9381  148.4653            145.8322
+s.e.  0.0440  0.0471   0.0479  0.0510   53.6590  114.7798            663.0814
+      AvgSunshine
+        -941.9694
+s.e.    1164.0915
+
+sigma^2 = 117495352:  log likelihood = -5526.19
+AIC=11070.39   AICc=11070.75   BIC=11108.6
+
+Training set error measures:
+                    ME     RMSE      MAE  MPE MAPE      MASE       ACF1
+Training set -13.04024 10632.25 5938.713 -Inf  Inf 0.6847528 0.01080794</code></pre>
+</div>
+<details>
+<summary>Fit ARIMA baseline and ARIMA+xreg; compare metrics</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>arima_weather_fc <span class="ot">&lt;-</span> <span class="fu">forecast</span>(arima_weather, <span class="at">xreg =</span> test_xreg, <span class="at">h =</span> <span class="dv">24</span>)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>metrics_arima_baseline <span class="ot">&lt;-</span> <span class="fu">calc_metrics</span>(test_data<span class="sc">$</span>RecreationVisits,</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">as.numeric</span>(arima_baseline_fc<span class="sc">$</span>mean),</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"ARIMA Baseline"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ARIMA Baseline:
+  MAE: 17,596
+  RMSE:21,108
+  MAPE:15.59%</code></pre>
+</div>
+<details>
+<summary>Fit ARIMA baseline and ARIMA+xreg; compare metrics</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>metrics_arima_weather <span class="ot">&lt;-</span> <span class="fu">calc_metrics</span>(test_data<span class="sc">$</span>RecreationVisits,</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="fu">as.numeric</span>(arima_weather_fc<span class="sc">$</span>mean),</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">"ARIMA with Weather"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ARIMA with Weather:
+  MAE: 17,458
+  RMSE:20,955
+  MAPE:15.57%</code></pre>
+</div>
+</div>
+</section>
+<section id="method-3-random-forest-with-weather" class="level2">
+<h2 class="anchored" data-anchor-id="method-3-random-forest-with-weather">7) Method 3: Random Forest with Weather</h2>
+<p>We include both visitation lags and weather features for a flexible, non-linear model.</p>
+<div class="cell">
+<details>
+<summary>Train RF with visits + weather features; importance + metrics</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== RANDOM FOREST WITH WEATHER VARIABLES ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== RANDOM FOREST WITH WEATHER VARIABLES ===</code></pre>
+</div>
+<details>
+<summary>Train RF with visits + weather features; importance + metrics</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>train_rf <span class="ot">&lt;-</span> train_data <span class="sc">%&gt;%</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Visits_Lag12) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Visits_MA3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Visits_MA12)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(RecreationVisits, TimeIndex, MonthFactor, Quarter,</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>         Visits_Lag12, Visits_MA3, Visits_MA12,</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>         TempMean, TotalPrecipitation, AvgSunshine, AvgWindSpeed,</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>         PrecipDays, TempSunshine, IsPleasantWeather)</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>test_rf <span class="ot">&lt;-</span> test_data <span class="sc">%&gt;%</span></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Visits_Lag12) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Visits_MA3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Visits_MA12)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(RecreationVisits, TimeIndex, MonthFactor, Quarter,</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>         Visits_Lag12, Visits_MA3, Visits_MA12,</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>         TempMean, TotalPrecipitation, AvgSunshine, AvgWindSpeed,</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>         PrecipDays, TempSunshine, IsPleasantWeather)</span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>rf_weather <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>  RecreationVisits <span class="sc">~</span> .,</span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> train_rf,</span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">500</span>,</span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">4</span>,</span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Random Forest Model ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- Random Forest Model ---</code></pre>
+</div>
+<details>
+<summary>Train RF with visits + weather features; importance + metrics</summary>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_weather)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = RecreationVisits ~ ., data = train_rf,      ntree = 500, mtry = 4, importance = TRUE) 
+               Type of random forest: regression
+                     Number of trees: 500
+No. of variables tried at each split: 4
+
+          Mean of squared residuals: 141792404
+                    % Var explained: 95.62</code></pre>
+</div>
+<details>
+<summary>Train RF with visits + weather features; importance + metrics</summary>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Variable Importance ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- Variable Importance ---</code></pre>
+</div>
+<details>
+<summary>Train RF with visits + weather features; importance + metrics</summary>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>importance_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">importance</span>(rf_weather)) <span class="sc">%&gt;%</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"Variable"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="st">`</span><span class="at">%IncMSE</span><span class="st">`</span>))</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(importance_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Variable   %IncMSE IncNodePurity
+1        Visits_Lag12 28.013964  557907417935
+2          Visits_MA3 26.501576  377966476812
+3         Visits_MA12 18.888134   94124623028
+4           TimeIndex 18.447204   88284944242
+5        TempSunshine 12.209869  171086833065
+6         MonthFactor 11.539394  102195399338
+7         AvgSunshine 11.004120   54119152479
+8            TempMean  9.875763  160710905491
+9        AvgWindSpeed  9.382701   26748811621
+10            Quarter  8.706552    8008192668
+11  IsPleasantWeather  3.140214    9303429822
+12 TotalPrecipitation  1.499203    8653650147
+13         PrecipDays  0.816172    3266641835</code></pre>
+</div>
+<details>
+<summary>Train RF with visits + weather features; importance + metrics</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">varImpPlot</span>(rf_weather, <span class="at">main =</span> <span class="st">"Random Forest: Variable Importance</span><span class="sc">\n</span><span class="st">(Including Weather)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="arches_forecasting_with_weather_files/figure-html/rf-weather-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Train RF with visits + weather features; importance + metrics</summary>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>rf_pred_weather <span class="ot">&lt;-</span> <span class="fu">predict</span>(rf_weather, <span class="at">newdata =</span> test_rf)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>metrics_rf_weather <span class="ot">&lt;-</span> <span class="fu">calc_metrics</span>(test_rf<span class="sc">$</span>RecreationVisits, rf_pred_weather,</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Random Forest with Weather"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Random Forest with Weather:
+  MAE: 10,360
+  RMSE:13,315
+  MAPE:10.56%</code></pre>
+</div>
+</div>
+</section>
+<section id="model-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="model-comparison">8) Model Comparison</h2>
+<p>We gather the accuracy metrics across all methods and sort by MAPE.</p>
+<div class="cell">
+<details>
+<summary>Tabulate and sort metrics across all models</summary>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== COMPREHENSIVE MODEL COMPARISON ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== COMPREHENSIVE MODEL COMPARISON ===</code></pre>
+</div>
+<details>
+<summary>Tabulate and sort metrics across all models</summary>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Model =</span> <span class="fu">c</span>(<span class="st">"LM Baseline"</span>, <span class="st">"LM + Weather"</span>, <span class="st">"LM + Weather + Interactions"</span>,</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ARIMA Baseline"</span>, <span class="st">"ARIMA + Weather"</span>, <span class="st">"RF + Weather"</span>),</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">MAE =</span> <span class="fu">c</span>(metrics_lm_baseline[<span class="st">"MAE"</span>], metrics_lm_weather[<span class="st">"MAE"</span>],</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>          metrics_lm_full[<span class="st">"MAE"</span>], metrics_arima_baseline[<span class="st">"MAE"</span>],</span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>          metrics_arima_weather[<span class="st">"MAE"</span>], metrics_rf_weather[<span class="st">"MAE"</span>]),</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE =</span> <span class="fu">c</span>(metrics_lm_baseline[<span class="st">"RMSE"</span>], metrics_lm_weather[<span class="st">"RMSE"</span>],</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>           metrics_lm_full[<span class="st">"RMSE"</span>], metrics_arima_baseline[<span class="st">"RMSE"</span>],</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>           metrics_arima_weather[<span class="st">"RMSE"</span>], metrics_rf_weather[<span class="st">"RMSE"</span>]),</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">MAPE =</span> <span class="fu">c</span>(metrics_lm_baseline[<span class="st">"MAPE"</span>], metrics_lm_weather[<span class="st">"MAPE"</span>],</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>           metrics_lm_full[<span class="st">"MAPE"</span>], metrics_arima_baseline[<span class="st">"MAPE"</span>],</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>           metrics_arima_weather[<span class="st">"MAPE"</span>], metrics_rf_weather[<span class="st">"MAPE"</span>])</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(., <span class="dv">2</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(MAPE)</span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(comparison)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                        Model      MAE     RMSE  MAPE
+1                RF + Weather 10359.99 13315.08 10.56
+2             ARIMA + Weather 17458.08 20954.89 15.57
+3              ARIMA Baseline 17596.37 21108.46 15.59
+4                 LM Baseline 18864.70 21482.70 27.89
+5 LM + Weather + Interactions 18186.01 21975.62 28.66
+6                LM + Weather 18671.90 22358.17 29.03</code></pre>
+</div>
+<details>
+<summary>Tabulate and sort metrics across all models</summary>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Impact of Weather Variables ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- Impact of Weather Variables ---</code></pre>
+</div>
+<details>
+<summary>Tabulate and sort metrics across all models</summary>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>lm_improvement <span class="ot">&lt;-</span> (metrics_lm_baseline[<span class="st">"MAPE"</span>] <span class="sc">-</span> metrics_lm_full[<span class="st">"MAPE"</span>]) <span class="sc">/</span> metrics_lm_baseline[<span class="st">"MAPE"</span>] <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>arima_improvement <span class="ot">&lt;-</span> (metrics_arima_baseline[<span class="st">"MAPE"</span>] <span class="sc">-</span> metrics_arima_weather[<span class="st">"MAPE"</span>]) <span class="sc">/</span> metrics_arima_baseline[<span class="st">"MAPE"</span>] <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"LM MAPE improvement with weather:"</span>, <span class="fu">round</span>(lm_improvement, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>LM MAPE improvement with weather: -2.76 %</code></pre>
+</div>
+<details>
+<summary>Tabulate and sort metrics across all models</summary>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ARIMA MAPE improvement with weather:"</span>, <span class="fu">round</span>(arima_improvement, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>ARIMA MAPE improvement with weather: 0.13 %</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizations-forecast-comparisons-weather-impact" class="level2">
+<h2 class="anchored" data-anchor-id="visualizations-forecast-comparisons-weather-impact">9) Visualizations: Forecast Comparisons &amp; Weather Impact</h2>
+<p>We compare model forecasts on the test set and illustrate how weather reduces error.</p>
+<div class="cell">
+<details>
+<summary>Overlay forecasts by model and show MAPE improvement</summary>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== GENERATING FORECAST VISUALIZATIONS ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== GENERATING FORECAST VISUALIZATIONS ===</code></pre>
+</div>
+<details>
+<summary>Overlay forecasts by model and show MAPE improvement</summary>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>forecast_comparison <span class="ot">&lt;-</span> test_data <span class="sc">%&gt;%</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Actual =</span> RecreationVisits,</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">LM Baseline</span><span class="st">`</span> <span class="ot">=</span> lm_pred_baseline,</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">LM + Weather</span><span class="st">`</span> <span class="ot">=</span> lm_pred_weather_full,</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">ARIMA Baseline</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(arima_baseline_fc<span class="sc">$</span>mean),</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">ARIMA + Weather</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(arima_weather_fc<span class="sc">$</span>mean)</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date, Actual, <span class="st">`</span><span class="at">LM Baseline</span><span class="st">`</span>, <span class="st">`</span><span class="at">LM + Weather</span><span class="st">`</span>, <span class="st">`</span><span class="at">ARIMA Baseline</span><span class="st">`</span>, <span class="st">`</span><span class="at">ARIMA + Weather</span><span class="st">`</span>)</span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a><span class="co"># RF results (may be fewer observations due to lag NA trimming)</span></span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>rf_results <span class="ot">&lt;-</span> test_rf <span class="sc">%&gt;%</span></span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> test_data<span class="sc">$</span>Date[<span class="fu">match</span>(<span class="fu">row_number</span>(), <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(test_data<span class="sc">$</span>Visits_Lag12)))],</span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">RF + Weather</span><span class="st">`</span> <span class="ot">=</span> rf_pred_weather) <span class="sc">%&gt;%</span></span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date, <span class="st">`</span><span class="at">RF + Weather</span><span class="st">`</span>)</span>
+<span id="cb89-16"><a href="#cb89-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-17"><a href="#cb89-17" aria-hidden="true" tabindex="-1"></a>forecast_comparison <span class="ot">&lt;-</span> forecast_comparison <span class="sc">%&gt;%</span></span>
+<span id="cb89-18"><a href="#cb89-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(rf_results, <span class="at">by =</span> <span class="st">"Date"</span>)</span>
+<span id="cb89-19"><a href="#cb89-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-20"><a href="#cb89-20" aria-hidden="true" tabindex="-1"></a>forecast_long <span class="ot">&lt;-</span> forecast_comparison <span class="sc">%&gt;%</span></span>
+<span id="cb89-21"><a href="#cb89-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>Date, <span class="at">names_to =</span> <span class="st">"Model"</span>, <span class="at">values_to =</span> <span class="st">"Visits"</span>)</span>
+<span id="cb89-22"><a href="#cb89-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-23"><a href="#cb89-23" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(forecast_long, <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Visits, <span class="at">color =</span> Model, <span class="at">linetype =</span> Model)) <span class="sc">+</span></span>
+<span id="cb89-24"><a href="#cb89-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb89-25"><a href="#cb89-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Actual"</span> <span class="ot">=</span> <span class="st">"black"</span>,</span>
+<span id="cb89-26"><a href="#cb89-26" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"LM Baseline"</span> <span class="ot">=</span> <span class="st">"gray50"</span>,</span>
+<span id="cb89-27"><a href="#cb89-27" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"LM + Weather"</span> <span class="ot">=</span> <span class="st">"blue"</span>,</span>
+<span id="cb89-28"><a href="#cb89-28" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"ARIMA Baseline"</span> <span class="ot">=</span> <span class="st">"pink"</span>,</span>
+<span id="cb89-29"><a href="#cb89-29" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"ARIMA + Weather"</span> <span class="ot">=</span> <span class="st">"red"</span>,</span>
+<span id="cb89-30"><a href="#cb89-30" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"RF + Weather"</span> <span class="ot">=</span> <span class="st">"darkgreen"</span>)) <span class="sc">+</span></span>
+<span id="cb89-31"><a href="#cb89-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Actual"</span> <span class="ot">=</span> <span class="st">"solid"</span>,</span>
+<span id="cb89-32"><a href="#cb89-32" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"LM Baseline"</span> <span class="ot">=</span> <span class="st">"dotted"</span>,</span>
+<span id="cb89-33"><a href="#cb89-33" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"LM + Weather"</span> <span class="ot">=</span> <span class="st">"dashed"</span>,</span>
+<span id="cb89-34"><a href="#cb89-34" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"ARIMA Baseline"</span> <span class="ot">=</span> <span class="st">"dotted"</span>,</span>
+<span id="cb89-35"><a href="#cb89-35" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"ARIMA + Weather"</span> <span class="ot">=</span> <span class="st">"dashed"</span>,</span>
+<span id="cb89-36"><a href="#cb89-36" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"RF + Weather"</span> <span class="ot">=</span> <span class="st">"longdash"</span>)) <span class="sc">+</span></span>
+<span id="cb89-37"><a href="#cb89-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb89-38"><a href="#cb89-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Forecast Comparison: With vs. Without Weather Data"</span>,</span>
+<span id="cb89-39"><a href="#cb89-39" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Test period (24 months)"</span>,</span>
+<span id="cb89-40"><a href="#cb89-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb89-41"><a href="#cb89-41" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Recreation Visits"</span>) <span class="sc">+</span></span>
+<span id="cb89-42"><a href="#cb89-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb89-43"><a href="#cb89-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb89-44"><a href="#cb89-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-45"><a href="#cb89-45" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="arches_forecasting_with_weather_files/figure-html/visuals-1.png" class="img-fluid" width="864"></p>
+</div>
+<details>
+<summary>Overlay forecasts by model and show MAPE improvement</summary>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Weather impact bar chart</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>improvement_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Model =</span> <span class="fu">c</span>(<span class="st">"Linear Regression"</span>, <span class="st">"ARIMA"</span>),</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Baseline =</span> <span class="fu">c</span>(metrics_lm_baseline[<span class="st">"MAPE"</span>], metrics_arima_baseline[<span class="st">"MAPE"</span>]),</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">WithWeather =</span> <span class="fu">c</span>(metrics_lm_full[<span class="st">"MAPE"</span>], metrics_arima_weather[<span class="st">"MAPE"</span>])</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Baseline, WithWeather), <span class="at">names_to =</span> <span class="st">"Version"</span>, <span class="at">values_to =</span> <span class="st">"MAPE"</span>)</span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(improvement_data, <span class="fu">aes</span>(<span class="at">x =</span> Model, <span class="at">y =</span> MAPE, <span class="at">fill =</span> Version)) <span class="sc">+</span></span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(MAPE, <span class="dv">2</span>)), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Baseline"</span> <span class="ot">=</span> <span class="st">"gray70"</span>, <span class="st">"WithWeather"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>)) <span class="sc">+</span></span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Impact of Weather Variables on Forecast Accuracy"</span>,</span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Lower MAPE is better"</span>,</span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Model Type"</span>,</span>
+<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"MAPE (%)"</span>,</span>
+<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Model Version"</span>) <span class="sc">+</span></span>
+<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="arches_forecasting_with_weather_files/figure-html/visuals-2.png" class="img-fluid" width="864"></p>
+</div>
+</div>
+</section>
+<section id="weather-impact-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="weather-impact-analysis">10) Weather Impact Analysis</h2>
+<p>We interpret model coefficients, list the most influential weather variables, and run a simple scenario analysis.</p>
+<div class="cell">
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== WEATHER IMPACT ANALYSIS ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== WEATHER IMPACT ANALYSIS ===</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>weather_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(lm_weather_full)[<span class="fu">c</span>(<span class="st">"TempMean"</span>, <span class="st">"TotalPrecipitation"</span>, <span class="st">"AvgSunshine"</span>, <span class="st">"AvgWindSpeed"</span>)]</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Weather Variable Effects (Linear Model):</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Weather Variable Effects (Linear Model):</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  Temperature (+1°F):"</span>, <span class="fu">round</span>(weather_coefs[<span class="st">"TempMean"</span>], <span class="dv">0</span>), <span class="st">"visits</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Temperature (+1°F): 1695 visits</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  Precipitation (+1 inch):"</span>, <span class="fu">round</span>(weather_coefs[<span class="st">"TotalPrecipitation"</span>], <span class="dv">0</span>), <span class="st">"visits</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Precipitation (+1 inch): -718 visits</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  Sunshine (+1 hour/day):"</span>, <span class="fu">round</span>(weather_coefs[<span class="st">"AvgSunshine"</span>], <span class="dv">0</span>), <span class="st">"visits</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Sunshine (+1 hour/day): -4185 visits</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  Wind speed (+1 mph):"</span>, <span class="fu">round</span>(weather_coefs[<span class="st">"AvgWindSpeed"</span>], <span class="dv">0</span>), <span class="st">"visits</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Wind speed (+1 mph): 914 visits</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== SCENARIO ANALYSIS ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== SCENARIO ANALYSIS ===</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>baseline_scenario <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">TimeIndex =</span> <span class="fu">max</span>(train_data<span class="sc">$</span>TimeIndex) <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">MonthFactor =</span> <span class="fu">factor</span>(<span class="dv">7</span>, <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>),  <span class="co"># July</span></span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">TempMean =</span> <span class="dv">85</span>,</span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">TotalPrecipitation =</span> <span class="fl">0.5</span>,</span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">AvgSunshine =</span> <span class="dv">10</span>,</span>
+<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">AvgWindSpeed =</span> <span class="dv">8</span>,</span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">TempSunshine =</span> <span class="dv">85</span> <span class="sc">*</span> <span class="dv">10</span>,</span>
+<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">IsPleasantWeather =</span> <span class="dv">1</span></span>
+<span id="cb105-10"><a href="#cb105-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb105-11"><a href="#cb105-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-12"><a href="#cb105-12" aria-hidden="true" tabindex="-1"></a>baseline_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm_weather_full, <span class="at">newdata =</span> baseline_scenario)</span>
+<span id="cb105-13"><a href="#cb105-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-14"><a href="#cb105-14" aria-hidden="true" tabindex="-1"></a>warm_scenario <span class="ot">&lt;-</span> baseline_scenario</span>
+<span id="cb105-15"><a href="#cb105-15" aria-hidden="true" tabindex="-1"></a>warm_scenario<span class="sc">$</span>TempMean <span class="ot">&lt;-</span> <span class="dv">90</span></span>
+<span id="cb105-16"><a href="#cb105-16" aria-hidden="true" tabindex="-1"></a>warm_scenario<span class="sc">$</span>TempSunshine <span class="ot">&lt;-</span> <span class="dv">90</span> <span class="sc">*</span> <span class="dv">10</span></span>
+<span id="cb105-17"><a href="#cb105-17" aria-hidden="true" tabindex="-1"></a>warm_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm_weather_full, <span class="at">newdata =</span> warm_scenario)</span>
+<span id="cb105-18"><a href="#cb105-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-19"><a href="#cb105-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Baseline (July, 85°F):"</span>, <span class="fu">format</span>(<span class="fu">round</span>(baseline_pred), <span class="at">big.mark =</span> <span class="st">","</span>), <span class="st">"visits</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Baseline (July, 85°F): 202,437 visits</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Warmer scenario (+5°F):"</span>, <span class="fu">format</span>(<span class="fu">round</span>(warm_pred), <span class="at">big.mark =</span> <span class="st">","</span>), <span class="st">"visits</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warmer scenario (+5°F): 206,940 visits</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Change:"</span>, <span class="fu">format</span>(<span class="fu">round</span>(warm_pred <span class="sc">-</span> baseline_pred), <span class="at">big.mark =</span> <span class="st">","</span>),</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"("</span>, <span class="fu">round</span>((warm_pred <span class="sc">-</span> baseline_pred) <span class="sc">/</span> baseline_pred <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%)</span><span class="sc">\n\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Change:4,502(2.2%)</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>rainy_scenario <span class="ot">&lt;-</span> baseline_scenario</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>rainy_scenario<span class="sc">$</span>TotalPrecipitation <span class="ot">&lt;-</span> <span class="fl">2.0</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>rainy_scenario<span class="sc">$</span>IsPleasantWeather <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>rainy_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm_weather_full, <span class="at">newdata =</span> rainy_scenario)</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Rainy scenario (+1.5 inches precip):"</span>, <span class="fu">format</span>(<span class="fu">round</span>(rainy_pred), <span class="at">big.mark =</span> <span class="st">","</span>), <span class="st">"visits</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rainy scenario (+1.5 inches precip): 199,625 visits</code></pre>
+</div>
+<details>
+<summary>Coefficients and scenario analysis</summary>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Change from baseline:"</span>, <span class="fu">format</span>(<span class="fu">round</span>(rainy_pred <span class="sc">-</span> baseline_pred), <span class="at">big.mark =</span> <span class="st">","</span>),</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"("</span>, <span class="fu">round</span>((rainy_pred <span class="sc">-</span> baseline_pred) <span class="sc">/</span> baseline_pred <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%)</span><span class="sc">\n\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Change from baseline:-2,812(-1.4%)</code></pre>
+</div>
+</div>
+</section>
+<section id="key-insights" class="level2">
+<h2 class="anchored" data-anchor-id="key-insights">11) Key Insights</h2>
+<p>We summarize accuracy gains and weather effects to guide decision-making.</p>
+<div class="cell">
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== KEY INSIGHTS ===</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== KEY INSIGHTS ===</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"1. WEATHER IMPACT ON FORECAST ACCURACY:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. WEATHER IMPACT ON FORECAST ACCURACY:</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   - Adding weather variables improved MAPE by"</span>, <span class="fu">round</span>(lm_improvement, <span class="dv">1</span>), <span class="st">"% (Linear Model)</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Adding weather variables improved MAPE by -2.8 % (Linear Model)</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   - ARIMA with weather improved by"</span>, <span class="fu">round</span>(arima_improvement, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - ARIMA with weather improved by 0.1 %</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"2. MOST IMPORTANT WEATHER VARIABLES:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. MOST IMPORTANT WEATHER VARIABLES:</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>top_weather <span class="ot">&lt;-</span> importance_df <span class="sc">%&gt;%</span></span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Variable <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"TempMean"</span>, <span class="st">"TotalPrecipitation"</span>, <span class="st">"AvgSunshine"</span>, <span class="st">"AvgWindSpeed"</span>, <span class="st">"PrecipDays"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span>
+<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(top_weather)) {</span>
+<span id="cb125-5"><a href="#cb125-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"   "</span>, i, <span class="st">". "</span>, top_weather<span class="sc">$</span>Variable[i], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb125-6"><a href="#cb125-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   1. AvgSunshine
+   2. TempMean
+   3. AvgWindSpeed</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"3. WEATHER EFFECTS ON VISITATION:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. WEATHER EFFECTS ON VISITATION:</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (weather_coefs[<span class="st">"TempMean"</span>] <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"   - Warmer temperatures generally increase visitation</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb130-4"><a href="#cb130-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"   - Higher temperatures may decrease visitation (heat)</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb130-5"><a href="#cb130-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Warmer temperatures generally increase visitation</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (weather_coefs[<span class="st">"TotalPrecipitation"</span>] <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"   - Precipitation negatively impacts visitation</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb132-3"><a href="#cb132-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Precipitation negatively impacts visitation</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (weather_coefs[<span class="st">"AvgSunshine"</span>] <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"   - More sunshine hours increase visitation</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb134-4"><a href="#cb134-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb134-5"><a href="#cb134-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">4. BEST MODEL:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+4. BEST MODEL:</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>best_model <span class="ot">&lt;-</span> comparison<span class="sc">$</span>Model[<span class="fu">which.min</span>(comparison<span class="sc">$</span>MAPE)]</span>
+<span id="cb136-2"><a href="#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   -"</span>, best_model, <span class="st">"with MAPE of"</span>, <span class="fu">min</span>(comparison<span class="sc">$</span>MAPE), <span class="st">"%</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - RF + Weather with MAPE of 10.56 %</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== ANALYSIS COMPLETE ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== ANALYSIS COMPLETE ===</code></pre>
+</div>
+<details>
+<summary>Print key takeaways</summary>
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Weather-enhanced forecasting models successfully trained and evaluated.</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Weather-enhanced forecasting models successfully trained and evaluated.</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
